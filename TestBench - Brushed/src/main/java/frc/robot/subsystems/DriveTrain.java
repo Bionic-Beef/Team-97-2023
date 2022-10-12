@@ -22,12 +22,13 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void arcadeDrive(double throttle, double rotation, double speed) {
-    double MtrPower = (throttle + rotation) * speed;
+    double LMtrPower = (rotation + throttle) * speed;
+    double RMtrPower = (rotation - throttle) * speed;
 
-    FL.set(MtrPower);
-    BL.set(MtrPower);
-    FR.set(MtrPower);
-    BR.set(MtrPower);
+    FL.set(LMtrPower);
+    BL.set(LMtrPower);
+    FR.set(RMtrPower);
+    BR.set(RMtrPower);
   }
 
   public void tankDrive(double lThrottle, double rThrottle, double speed) {
