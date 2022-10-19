@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ToggleMotor;
+
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +25,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_dDriveTrain = new DriveTrain();
   private final Joystick joystick1 = new Joystick(0);
+  final JoystickButton l1 = new JoystickButton(joystick1, 7);
+  final JoystickButton l2 = new JoystickButton(joystick1, 8);
+  final JoystickButton r1 = new JoystickButton(joystick1, 9);
+  final JoystickButton r2 = new JoystickButton(joystick1, 10);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -32,7 +40,8 @@ public class RobotContainer {
         () -> m_dDriveTrain.doDrive(
           joystick1.getRawAxis(1), 
           joystick1.getTwist(), 
-          Math.max(0, 1-joystick1.getRawAxis(3))
+          Math.max(0, 1-joystick1.getRawAxis(3)),
+          joystick1.getRawAxis(2)
           ),
       m_dDriveTrain)
     );
@@ -44,7 +53,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    l1.whenPressed(new ToggleMotor(m_dDriveTrain, "BL"));
+    l2.whenPressed(new ToggleMotor(m_dDriveTrain, "FL"));
+    r1.whenPressed(new ToggleMotor(m_dDriveTrain, "BR"));
+    r2.whenPressed(new ToggleMotor(m_dDriveTrain, "FR"));
+
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
