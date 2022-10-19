@@ -21,6 +21,29 @@ public class DriveTrain extends SubsystemBase {
     arcade = !arcade;
   }
 
+  public void test_FL() {
+    FL.set(0.25);
+  }
+
+  public void test_FR() {
+    FR.set(0.25);
+  }
+
+  public void test_BL() {
+    BL.set(0.25);
+  }
+
+  public void test_BR() {
+    BR.set(0.25);
+  }
+
+  public void stop_test() {
+    FL.set(0);
+    BL.set(0);
+    FR.set(0);
+    BR.set(0);
+  }
+
   public void arcadeDrive(double throttle, double rotation, double speed) {
     double LMtrPower = (rotation + throttle) * speed;
     double RMtrPower = (rotation - throttle) * speed;
