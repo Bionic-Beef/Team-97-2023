@@ -22,19 +22,19 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void test_FL() {
-    FL.set(0.25);
+    FL.set(0.5);
   }
 
   public void test_FR() {
-    FR.set(0.25);
+    FR.set(0.5);
   }
 
   public void test_BL() {
-    BL.set(0.25);
+    BL.set(0.5);
   }
 
   public void test_BR() {
-    BR.set(0.25);
+    BR.set(0.5);
   }
 
   public void stop_test() {
