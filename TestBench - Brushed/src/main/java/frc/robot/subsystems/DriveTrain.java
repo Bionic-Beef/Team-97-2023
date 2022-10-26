@@ -43,6 +43,15 @@ public class DriveTrain extends SubsystemBase {
     FR.set(0);
     BR.set(0);
   }
+  private void setLeft(double motorPower) {
+    FL.set(motorPower);
+    BL.set(motorPower);
+  }
+
+  private void setRight(double motorPower) {
+    FR.set(motorPower);
+    BR.set(motorPower);
+  }
 
   public void arcadeDrive(double throttle, double rotation, double speed) {
     double LMtrPower = (rotation + throttle) * speed;
@@ -53,8 +62,40 @@ public class DriveTrain extends SubsystemBase {
     FR.set(RMtrPower);
     BR.set(RMtrPower);
   }
+  // throttle is the forward-back axis; rotation is the left-right axis
+  public void arcadeDrive(double throttle, double tilt) {
+    // maximum speed in a single direction
+    double maximum = Math.max(Math.abs(throttle), Math.abs(tilt));
+    double total = throttle + tilt;
+    double difference = throttle - tilt;
+    // moving forward
+    if (throttle >= 0) {
+      // turn right
+      if (tilt >= 0) {
+        setLeft(maximum);
+        setRight(difference);
+      }
+      // turn left
+      else {
+        setLeft(total);
+        setRight(maximum);
+      }
+    }
+    // moving backward
+    else {
+      // turn left
+      if (tilt >= 0) {
+        setLeft(total);
+        setRight(-maximum);
+      }
+      // turn right
+      else {
+        setLeft(-maximum);
+        setRight(difference);
+      }
+    }
 
-  public void tankDrive(double lThrottle, double rThrottle, double speed) {
+  public void tankDrive(double lThrottle, double rThrottle, double speed, double tilt) {
     lThrottle *= speed;
     rThrottle *= speed;
 
@@ -64,9 +105,9 @@ public class DriveTrain extends SubsystemBase {
     BR.set(-rThrottle);
   }
 
-  public void doDrive(double throttle, double twist, double speed) {
+  public void doDrive(double throttle, double twist, double speed, ) {
     if (arcade) {
-      arcadeDrive(throttle, twist, speed);
+      arcadeDrive(throttle, tilt);
     } else {
       tankDrive(throttle, twist, speed);
     }
