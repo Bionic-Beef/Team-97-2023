@@ -4,14 +4,16 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  private Talon FL = new Talon(1);
-  private Talon FR = new Talon(2);
-  private Talon BL = new Talon(3);
-  private Talon BR = new Talon(4);
+  private CANSparkMax FL = new CANSparkMax(1, MotorType.kBrushless);
+  private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
   private boolean arcade = true;
 
   /** Creates a new DriveTrain. */
@@ -72,8 +74,8 @@ public class DriveTrain extends SubsystemBase {
   }
 
   private void setRight(double motorPower) {
-    FR.set(motorPower);
-    BR.set(motorPower);
+    FR.set(-motorPower);
+    BR.set(-motorPower);
   }
 
   // throttle is the forward-back axis; rotation is the left-right axis
@@ -121,12 +123,8 @@ public class DriveTrain extends SubsystemBase {
     BR.set(-rThrottle);
   }
 
-  public void doDrive(double throttle, double twist, double speed, double tilt) {
-    if (arcade) {
-      arcadeDrive(throttle, tilt);
-    } else {
-      tankDrive(throttle, twist, speed);
-    }
+  public void doDrive(double throttle, double tilt) {
+    arcadeDrive(throttle, tilt);
   }
 
   @Override
