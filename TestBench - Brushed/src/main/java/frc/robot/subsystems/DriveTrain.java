@@ -49,8 +49,9 @@ public class DriveTrain extends SubsystemBase {
   }
 
   private void setRight(double motorPower) {
-    FR.set(motorPower);
-    BR.set(motorPower);
+
+    FR.set(-motorPower);
+    BR.set(-motorPower);
   }
 
   public void arcadeDrive(double throttle, double rotation, double speed) {
@@ -94,8 +95,9 @@ public class DriveTrain extends SubsystemBase {
         setRight(difference);
       }
     }
+  }
 
-  public void tankDrive(double lThrottle, double rThrottle, double speed, double tilt) {
+  public void tankDrive(double lThrottle, double rThrottle, double speed) {
     lThrottle *= speed;
     rThrottle *= speed;
 
@@ -105,12 +107,9 @@ public class DriveTrain extends SubsystemBase {
     BR.set(-rThrottle);
   }
 
-  public void doDrive(double throttle, double twist, double speed, ) {
-    if (arcade) {
+
+  public void doDrive(double throttle, double tilt) {
       arcadeDrive(throttle, tilt);
-    } else {
-      tankDrive(throttle, twist, speed);
-    }
   }
 
   @Override

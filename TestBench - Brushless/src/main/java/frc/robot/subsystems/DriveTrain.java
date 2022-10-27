@@ -21,7 +21,6 @@ public class DriveTrain extends SubsystemBase {
     arcade = !arcade;
   }
 
-<<<<<<< HEAD:TestBench - Brushless/src/main/java/frc/robot/subsystems/DriveTrain.java
   public void arcadeDrive(double throttle, double rotation, double speed) {
     double LMtrPower = (rotation - throttle) * speed;
     double RMtrPower = (rotation + throttle) * speed;
@@ -30,7 +29,7 @@ public class DriveTrain extends SubsystemBase {
     BL.set(LMtrPower);
     FR.set(RMtrPower);
     BR.set(RMtrPower);
-=======
+  }
   public void toggleMotor(String motorIdentifier, double motorSpeed) {
     switch (motorIdentifier) {
       case "FL":
@@ -110,7 +109,6 @@ public class DriveTrain extends SubsystemBase {
       }
     }
 
->>>>>>> 8f0147d40f906dcd98f3fadda7884a3d3c2be1fa:TestBench/src/main/java/frc/robot/subsystems/DriveTrain.java
   }
 
   public void tankDrive(double lThrottle, double rThrottle, double speed) {

@@ -11,7 +11,6 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ToggleMotor;
 
 
 
@@ -38,9 +37,13 @@ public class RobotContainer {
     m_dDriveTrain.setDefaultCommand(
       new RunCommand(
         () -> m_dDriveTrain.doDrive(
+          //
           joystick1.getRawAxis(1), 
+          //
           joystick1.getTwist(), 
+          //
           Math.max(0, 1-joystick1.getRawAxis(3)),
+          //
           joystick1.getRawAxis(2)
           ),
       m_dDriveTrain)
@@ -54,10 +57,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    l1.whenPressed(new ToggleMotor(m_dDriveTrain, "BL"));
-    l2.whenPressed(new ToggleMotor(m_dDriveTrain, "FL"));
-    r1.whenPressed(new ToggleMotor(m_dDriveTrain, "BR"));
-    r2.whenPressed(new ToggleMotor(m_dDriveTrain, "FR"));
 
   }
 
