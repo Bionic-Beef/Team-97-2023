@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Test_FL;
 import frc.robot.commands.Test_FR;
+import frc.robot.commands.SpinThenDrive;
 import frc.robot.commands.Test_BL;
 import frc.robot.commands.Test_BR;
 import frc.robot.commands.stop_test;
@@ -16,6 +17,7 @@ import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -73,6 +75,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new SpinThenDrive(m_dDriveTrain);
   }
 }

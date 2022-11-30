@@ -112,6 +112,17 @@ public class DriveTrain extends SubsystemBase {
       arcadeDrive(throttle, tilt);
   }
 
+  public void setSpinning() {
+    arcadeDrive(0, .2);
+  }
+  public void stopMotors() {
+    setLeft(0);
+    setRight(0);
+  }
+  public void setForward() {
+    arcadeDrive(0.2, 0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
