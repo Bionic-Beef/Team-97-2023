@@ -32,42 +32,7 @@ public class DriveTrain extends SubsystemBase {
     FR.set(RMtrPower);
     BR.set(RMtrPower);
   }
-  public void toggleMotor(String motorIdentifier, double motorSpeed) {
-    switch (motorIdentifier) {
-      case "FL":
-        if (FL.get() == 0) {
-          FL.set(motorSpeed);
-        }
-        else {
-          FL.set(0);
-        }
-        break;
-      case "BL":
-        if (BL.get() == 0) {
-          BL.set(motorSpeed);
-        }
-        else {
-        BL.set(0);
-        }
-        break;
-      case "FR":
-      if (FR.get() == 0) {
-          FR.set(motorSpeed);
-        }
-        else {
-          FR.set(0);
-        }
-        break;
-      case "BR":
-        if (BR.get() == 0) {
-          BR.set(motorSpeed);
-        }
-        else {
-          BR.set(0);
-        }
-        break;
-    }
-  }
+  
   private void setLeft(double motorPower) {
     FL.set(motorPower);
     BL.set(motorPower);
