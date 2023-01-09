@@ -15,6 +15,7 @@ public class DriveTrain extends SubsystemBase {
   private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
   private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
   private boolean arcade = true;
+  private boolean isTurnSpeedSlow = false;
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {}
@@ -23,14 +24,8 @@ public class DriveTrain extends SubsystemBase {
     arcade = !arcade;
   }
 
-  public void arcadeDrive(double throttle, double rotation, double speed) {
-    double LMtrPower = (rotation - throttle) * speed;
-    double RMtrPower = (rotation + throttle) * speed;
-
-    FL.set(LMtrPower);
-    BL.set(LMtrPower);
-    FR.set(RMtrPower);
-    BR.set(RMtrPower);
+  public void toggleTurnSpeed() {
+    isTurnSpeedSlow = !isTurnSpeedSlow;
   }
   
   private void setLeft(double motorPower) {
@@ -46,6 +41,9 @@ public class DriveTrain extends SubsystemBase {
   // throttle is the forward-back axis; rotation is the left-right axis
   public void arcadeDrive(double throttle, double tilt) {
     // maximum speed in a single direction
+    if (isTurnSpeedSlow) {
+      tilt /= 2;
+    }
     double maximum = Math.max(Math.abs(throttle), Math.abs(tilt));
     double total = throttle + tilt;
     double difference = throttle - tilt;
@@ -89,9 +87,19 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void doDrive(double throttle, double tilt) {
+    // account for accidental movement
+    if (Math.abs(throttle) < 0.11) {
+      throttle = 0;
+    }
+    if (Math.abs(tilt) < 0.11) {
+      tilt = 0;
+    }
+    System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", throttle, tilt));
     arcadeDrive(throttle, tilt);
+    // System.out.println("y axis: " + throttle);
+    // System.out.println("x axis: " + tilt);
   }
-
+ 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
