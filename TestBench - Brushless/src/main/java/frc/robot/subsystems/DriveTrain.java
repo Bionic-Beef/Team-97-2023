@@ -76,6 +76,8 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  // public double getRampedValue(double )
+
   public void tankDrive(double lThrottle, double rThrottle, double speed) {
     lThrottle *= speed;
     rThrottle *= speed;
@@ -88,10 +90,10 @@ public class DriveTrain extends SubsystemBase {
 
   public void doDrive(double throttle, double tilt) {
     // account for accidental movement
-    if (Math.abs(throttle) < 0.11) {
+    if (Math.abs(throttle) < 0.15) {
       throttle = 0;
     }
-    if (Math.abs(tilt) < 0.11) {
+    if (Math.abs(tilt) < 0.15) {
       tilt = 0;
     }
     System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", throttle, tilt));

@@ -7,14 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Test_FL;
-import frc.robot.commands.Test_FR;
-import frc.robot.commands.SpinThenDrive;
-import frc.robot.commands.Test_BL;
-import frc.robot.commands.Test_BR;
-import frc.robot.commands.stop_test;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -28,17 +23,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_dDriveTrain = new DriveTrain();
-  private final Test_FL test_FL = new Test_FL(m_dDriveTrain);
-  private final Test_FR test_FR = new Test_FR(m_dDriveTrain);
-  private final Test_BL test_BL = new Test_BL(m_dDriveTrain);
-  private final Test_BR test_BR = new Test_BR(m_dDriveTrain);
-  private final stop_test stop_test = new stop_test(m_dDriveTrain);
-  private final Joystick joystick1 = new Joystick(0);
-
-  final JoystickButton FL_test = new JoystickButton(joystick1, 7);
-  final JoystickButton FR_test = new JoystickButton(joystick1, 8);
-  final JoystickButton BL_test = new JoystickButton(joystick1, 10);
-  final JoystickButton BR_test = new JoystickButton(joystick1, 9);
+  // private final Joystick joystick1 = new Joystick(0);
+  private final XboxController joystick1 = new XboxController(0);
+  private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 3);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -48,8 +35,12 @@ public class RobotContainer {
     m_dDriveTrain.setDefaultCommand(
       new RunCommand(
         () -> m_dDriveTrain.doDrive(
-          joystick1.getRawAxis(1),
-          joystick1.getRawAxis(0)
+          //thrustmaster
+          // joystick1.getRawAxis(1),
+          // joystick1.getRawAxis(0)
+          //xbox
+          joystick1.getLeftX(),
+          joystick1.getLeftY()
           ),
       m_dDriveTrain)
     );
@@ -62,11 +53,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    FL_test.toggleWhenPressed(test_FL);
-    FR_test.toggleWhenPressed(test_FR);
-    BL_test.toggleWhenPressed(test_BL);
-    BR_test.toggleWhenPressed(test_BR);
+    toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.toggleTurnSpeed();
+    }));
   }
+
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -75,6 +67,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new SpinThenDrive(m_dDriveTrain);
+    return null;
   }
 }
