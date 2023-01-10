@@ -7,6 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.SetSolenoidForward;
+import frc.robot.commands.ToggleSolenoid;
+import frc.robot.commands.TurnSolenoidOff;
 // import frc.robot.commands.SetSolenoidForward;
 // import frc.robot.commands.ToggleSolenoid;
 // import frc.robot.commands.TurnSolenoidOff;
@@ -29,7 +32,6 @@ public class RobotContainer {
   private final JoystickButton setSolenoidForwardButton = new JoystickButton(m_joystick1, 8);
   private final JoystickButton turnSolenoidOffButton = new JoystickButton(m_joystick1, 7);
 
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -43,13 +45,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // toggleSolenoidButton.whenPressed(new ToggleSolenoid(m_pneumaticsSubsystem));
-    // setSolenoidForwardButton.whenPressed(new SetSolenoidForward(m_pneumaticsSubsystem));
-    // turnSolenoidOffButton.whenPressed(new TurnSolenoidOff(m_pneumaticsSubsystem));
+    toggleSolenoidButton.whenPressed(new ToggleSolenoid(m_pneumaticsSubsystem));
+    setSolenoidForwardButton.whenPressed(new SetSolenoidForward(m_pneumaticsSubsystem));
+    turnSolenoidOffButton.whenPressed(new TurnSolenoidOff(m_pneumaticsSubsystem));
 
-    toggleSolenoidButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::toggleSolenoid, m_pneumaticsSubsystem));
-    setSolenoidForwardButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::setSolenoidForward, m_pneumaticsSubsystem));
-    turnSolenoidOffButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::turnSolenoidOff, m_pneumaticsSubsystem));
+    // toggleSolenoidButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::toggleSolenoid, m_pneumaticsSubsystem));
+    // setSolenoidForwardButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::setSolenoidForward, m_pneumaticsSubsystem));
+    // turnSolenoidOffButton.whenPressed(new InstantCommand(m_pneumaticsSubsystem::turnSolenoidOff, m_pneumaticsSubsystem));
   }
 
   /**

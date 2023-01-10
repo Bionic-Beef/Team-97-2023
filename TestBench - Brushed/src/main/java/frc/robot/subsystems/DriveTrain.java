@@ -13,28 +13,14 @@ public class DriveTrain extends SubsystemBase {
   private Victor FR = new Victor(4);
   private Victor BR = new Victor(3);
   private boolean arcade = true;
+  private boolean isTurnSpeedSlow = false;
+
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {}
 
   public void switchMode() {
     arcade = !arcade;
-  }
-
-  public void test_FL() {
-    FL.set(0.5);
-  }
-
-  public void test_FR() {
-    FR.set(0.5);
-  }
-
-  public void test_BL() {
-    BL.set(0.5);
-  }
-
-  public void test_BR() {
-    BR.set(0.5);
   }
 
   public void stop_test() {
@@ -63,8 +49,14 @@ public class DriveTrain extends SubsystemBase {
     FR.set(RMtrPower);
     BR.set(RMtrPower);
   }
+  public void toggleTurnSpeed() {
+    isTurnSpeedSlow = !isTurnSpeedSlow;
+  }
   // throttle is the forward-back axis; rotation is the left-right axis
   public void arcadeDrive(double throttle, double tilt) {
+    if (isTurnSpeedSlow) {
+      tilt /= 2;
+    }
     // maximum speed in a single direction
     double maximum = Math.max(Math.abs(throttle), Math.abs(tilt));
     double total = throttle + tilt;

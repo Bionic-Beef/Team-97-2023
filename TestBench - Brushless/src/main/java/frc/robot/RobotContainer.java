@@ -5,11 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
@@ -23,11 +25,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_dDriveTrain = new DriveTrain();
-  private final Joystick joystick1 = new Joystick(0);
-  final JoystickButton l1 = new JoystickButton(joystick1, 7);
-  final JoystickButton l2 = new JoystickButton(joystick1, 8);
-  final JoystickButton r1 = new JoystickButton(joystick1, 9);
-  final JoystickButton r2 = new JoystickButton(joystick1, 10);
+  // private final Joystick joystick1 = new Joystick(0);
+  private final XboxController joystick1 = new XboxController(0);
+  private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 3);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -36,9 +36,14 @@ public class RobotContainer {
 
     m_dDriveTrain.setDefaultCommand(
       new RunCommand(
-        () -> m_dDriveTrain.doDrive(
+        () -> 
+        m_dDriveTrain.doDrive(
+          // Thrustmaster controller:
           joystick1.getRawAxis(1),
-          joystick1.getRawAxis(2)
+          joystick1.getRawAxis(0)
+          // Xbox controller:
+          // joystick1.getLeftX(),
+          // joystick1.getLeftY()
           ),
       m_dDriveTrain)
     );
@@ -51,7 +56,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.toggleTurnSpeed();
+    }));
   }
 
   /**

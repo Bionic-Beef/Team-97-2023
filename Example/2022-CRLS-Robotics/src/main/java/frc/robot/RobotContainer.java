@@ -39,9 +39,9 @@ public class RobotContainer {
       new RunCommand(
         () -> m_DriveTrain.doDrive(
           joystick1.getRawAxis(1), 
-          joystick1.getTwist(), 
+          joystick1.getRawAxis(0), 
           Math.max(0, 1-joystick1.getRawAxis(3)),
-          joystick1.getRawAxis(2)
+          joystick1.getRawAxis(0)
           ),
       m_DriveTrain)
     );
