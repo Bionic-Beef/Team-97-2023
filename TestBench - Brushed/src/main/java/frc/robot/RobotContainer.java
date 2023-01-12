@@ -40,7 +40,8 @@ public class RobotContainer {
           // joystick1.getRawAxis(0)
           //xbox
           joystick1.getLeftX(),
-          joystick1.getLeftY()
+          joystick1.getLeftY(),
+          joystick1.getRightY()
           ),
       m_dDriveTrain)
     );

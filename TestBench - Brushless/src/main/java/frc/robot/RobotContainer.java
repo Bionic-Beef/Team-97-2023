@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
 
 
 /**
@@ -27,7 +27,19 @@ public class RobotContainer {
   private final DriveTrain m_dDriveTrain = new DriveTrain();
   // private final Joystick joystick1 = new Joystick(0);
   private final XboxController joystick1 = new XboxController(0);
-  private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 3);
+  // x button
+  // private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 2);
+  // // a button
+  private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 0);
+  //a
+  // private JoystickButton toggleFL = new JoystickButton(joystick1, 0);
+  // //b
+  // private JoystickButton toggleFR = new JoystickButton(joystick1, 1);
+  // //x
+  // private JoystickButton toggleBL = new JoystickButton(joystick1, 2);
+  // //y
+  // private JoystickButton toggleBR = new JoystickButton(joystick1, 3);
+  private final SlewRateLimiter filter = new SlewRateLimiter(2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -35,15 +47,17 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_dDriveTrain.setDefaultCommand(
+
       new RunCommand(
         () -> 
         m_dDriveTrain.doDrive(
           // Thrustmaster controller:
-          joystick1.getRawAxis(1),
-          joystick1.getRawAxis(0)
+          // joystick1.getRawAxis(1),
+          // joystick1.getRawAxis(0)
           // Xbox controller:
-          // joystick1.getLeftX(),
-          // joystick1.getLeftY()
+          filter.calculate(joystick1.getLeftY()),
+          joystick1.getLeftX(),
+          filter.calculate(joystick1.getRightY())
           ),
       m_dDriveTrain)
     );
@@ -56,9 +70,26 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.toggleTurnSpeed();
+    // toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
+    //   // m_dDriveTrain.toggleTurnSpeed();
+    // }));
+    toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
+      // m_dDriveTrain.switchMode();
     }));
+    // toggleBL.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setBL();
+    // }));
+    // toggleBR.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setBR();
+    // }));
+    // toggleFL.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setFL();
+    // }));
+    // toggleFR.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setFR();
+    // }));
+    
+
   }
 
   /**
