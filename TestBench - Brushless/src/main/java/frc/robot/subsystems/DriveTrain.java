@@ -24,6 +24,7 @@ public class DriveTrain extends SubsystemBase {
   // private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
   private boolean arcade = true;
   private boolean isTurnSpeedSlow = false;
+  private double accelVal = 0.05;
   MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
   MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
   DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
@@ -83,44 +84,6 @@ public class DriveTrain extends SubsystemBase {
     BR.set(-motorPower);
   }
 
-  // throttle is the forward-back axis; rotation is the left-right axis
-  public void arcadeDrive(double throttle, double tilt) {
-    // maximum speed in a single direction
-    if (isTurnSpeedSlow) {
-      tilt /= 2;
-    }
-    double maximum = Math.max(Math.abs(throttle), Math.abs(tilt));
-    double total = throttle + tilt;
-    double difference = throttle - tilt;
-    // moving forward
-    if (throttle >= 0) {
-      // turn right
-      if (tilt >= 0) {
-        setLeft(maximum);
-        setRight(difference);
-      }
-      // turn left
-      else {
-        setLeft(total);
-        setRight(maximum);
-      }
-    }
-    // moving backward
-    else {
-      // turn left
-      if (tilt >= 0) {
-        setLeft(total);
-        setRight(-maximum);
-      }
-      // turn right
-      else {
-        setLeft(-maximum);
-        setRight(difference);
-      }
-    }
-
-  }
-
   // public double getRampedValue(double )
 
   public void tankDrive(double lThrottle, double rThrottle) {
@@ -129,6 +92,17 @@ public class DriveTrain extends SubsystemBase {
 
     setLeft(lThrottle);
     setRight(-rThrottle);
+  }
+
+  public double accelerate(double currentSpeed, double targetSpeed) {
+    
+    if (targetSpeed > currentSpeed + accelVal) {
+      currentSpeed += accelVal;
+    } else if (targetSpeed < currentSpeed - accelVal) {
+      currentSpeed -= accelVal;
+    }
+
+    return currentSpeed;
   }
 
   public void doDrive(double lThrottle, double tilt, double rThrottle) {
@@ -145,7 +119,8 @@ public class DriveTrain extends SubsystemBase {
     if (arcade) {     
       System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", lThrottle, tilt));
       // m_drive.arcadeDrive(lThrottle, tilt);
-      m_drive.curvatureDrive(lThrottle, tilt, false);
+      double currentSpeed = (m_left.get() + m_right.get()) / 2;
+      m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, false);
     }
     else {
       m_drive.tankDrive(lThrottle, rThrottle);
