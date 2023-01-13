@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveTrain;
@@ -31,6 +32,7 @@ public class RobotContainer {
   // private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 2);
   // // a button
   private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 0);
+  private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
   //a
   // private JoystickButton toggleFL = new JoystickButton(joystick1, 0);
   // //b
@@ -75,6 +77,9 @@ public class RobotContainer {
     // }));
     toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
       // m_dDriveTrain.switchMode();
+    }));
+    toggleSpin.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.toggleSpin();
     }));
     // toggleBL.whenPressed(new InstantCommand(() -> {
     //   m_dDriveTrain.setBL();

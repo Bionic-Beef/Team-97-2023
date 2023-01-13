@@ -24,6 +24,7 @@ public class DriveTrain extends SubsystemBase {
   // private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
   private boolean arcade = true;
   private boolean isTurnSpeedSlow = false;
+  private boolean spin = false;
   private double accelVal = 0.05;
   MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
   MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
@@ -75,6 +76,10 @@ public class DriveTrain extends SubsystemBase {
     isTurnSpeedSlow = !isTurnSpeedSlow;
   }
   
+  public void toggleSpin() {
+    spin = !spin;
+  }
+
   private void setLeft(double motorPower) {
     FL.set(motorPower);
     BL.set(motorPower);
@@ -120,7 +125,7 @@ public class DriveTrain extends SubsystemBase {
       System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", lThrottle, tilt));
       // m_drive.arcadeDrive(lThrottle, tilt);
       double currentSpeed = (m_left.get() + m_right.get()) / 2;
-      m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, false);
+      m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, spin);
     }
     else {
       m_drive.tankDrive(lThrottle, rThrottle);
