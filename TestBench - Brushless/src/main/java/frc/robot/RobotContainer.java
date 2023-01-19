@@ -31,7 +31,7 @@ public class RobotContainer {
   // x button
   // private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 2);
   // // a button
-  private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 0);
+  private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 1);
   private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
   //a
   // private JoystickButton toggleFL = new JoystickButton(joystick1, 0);
@@ -57,9 +57,11 @@ public class RobotContainer {
           // joystick1.getRawAxis(1),
           // joystick1.getRawAxis(0)
           // Xbox controller:
-          filter.calculate(joystick1.getLeftY()),
+          joystick1.getLeftY(),
+          // filter.calculate(joystick1.getLeftY()),
           joystick1.getLeftX(),
-          filter.calculate(joystick1.getRightY())
+          joystick1.getRightY()
+          // filter.calculate(joystick1.getRightY())
           ),
       m_dDriveTrain)
     );

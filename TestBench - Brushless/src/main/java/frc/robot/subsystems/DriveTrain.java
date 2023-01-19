@@ -7,8 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,15 +27,17 @@ public class DriveTrain extends SubsystemBase {
   private boolean isTurnSpeedSlow = false;
   private boolean spin = false;
   private double accelVal = 0.05;
-  MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
-  MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
-  DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  // m_left.setInverted(true);
-  // m_right.setInverted(true);
-
+  private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
+  private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
+  private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+  private RelativeEncoder myEncoder;
 
   /** Creates a new DriveTrain. */
-  public DriveTrain() {}
+  public DriveTrain() {
+    // m_right.setInverted(true);
+    // m_left.setInverted(true);
+
+  }
 
   public void switchMode() {
     arcade = !arcade;
@@ -44,6 +47,7 @@ public class DriveTrain extends SubsystemBase {
       FL.set(.3);
     }
     else {
+      
       FL.set(0);
     }
   }
@@ -125,10 +129,13 @@ public class DriveTrain extends SubsystemBase {
       System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", lThrottle, tilt));
       // m_drive.arcadeDrive(lThrottle, tilt);
       double currentSpeed = (m_left.get() + m_right.get()) / 2;
-      m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, spin);
+      // m_drive.curvatureDrive(lThrottle, tilt * .75, spin);
+      m_drive.tankDrive(rThrottle * .5, lThrottle * .5
+      );
+      // m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, spin);
     }
     else {
-      m_drive.tankDrive(lThrottle, rThrottle);
+      m_drive.tankDrive(rThrottle, lThrottle);
       System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
     }
   }
