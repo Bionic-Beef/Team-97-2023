@@ -20,11 +20,18 @@ public class DriveTrain extends SubsystemBase {
   private Victor FR = new Victor(4);
   private Victor BR = new Victor(3);
   // private CANSparkMax FL = new CANSparkMax(1, MotorType.kBrushless);
-  // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
-  // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
-  // private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
+  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+
+  // // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  // private CANSparkMax FR = new CANSparkMax(1, MotorType.kBrushless);
+
+  // // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  // private CANSparkMax BL = new CANSparkMax(2, MotorType.kBrushless);
+
+  // // private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
+  // private CANSparkMax BR = new CANSparkMax(3, MotorType.kBrushless);
+
   private boolean arcade = true;
-  private boolean isTurnSpeedSlow = false;
   private boolean spin = false;
   private double accelVal = 0.05;
   private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
@@ -43,95 +50,53 @@ public class DriveTrain extends SubsystemBase {
     arcade = !arcade;
   }
   public void setFL() {
+    System.out.println("front left motor toggled");
     if (FL.get() != 0) {
-      FL.set(.3);
+      FL.set(0);
     }
     else {
-      
-      FL.set(0);
+      FL.set(0.3);
     }
   }
   public void setFR() {
+    System.out.println("front right motor toggled");
     if (FR.get() != 0) {
-      FR.set(.3);
+      FR.set(0);
     }
     else {
-      FR.set(0);
+      FR.set(0.3);
     }
   }
   public void setBL() {
+    System.out.println("back left motor toggled");
     if (BL.get() != 0) {
-      BL.set(.3);
+      BL.set(0);
     }
     else {
-      BL.set(0);
+      BL.set(0.3);
     }
   }
   public void setBR() {
+    System.out.println("back right motor toggled");
     if (BR.get() != 0) {
-      BR.set(.3);
-    }
-    else {
       BR.set(0);
     }
-  }
-
-  public void toggleTurnSpeed() {
-    isTurnSpeedSlow = !isTurnSpeedSlow;
+    else {
+      BR.set(0.3);
+    }
   }
   
   public void toggleSpin() {
     spin = !spin;
   }
 
-  private void setLeft(double motorPower) {
-    FL.set(motorPower);
-    BL.set(motorPower);
-  }
-  private void setRight(double motorPower) {
-    FR.set(-motorPower);
-    BR.set(-motorPower);
-  }
-
-  // public double getRampedValue(double )
-
-  public void tankDrive(double lThrottle, double rThrottle) {
-    // lThrottle *= speed;
-    // rThrottle *= speed;
-
-    setLeft(lThrottle);
-    setRight(-rThrottle);
-  }
-
-  public double accelerate(double currentSpeed, double targetSpeed) {
-    
-    if (targetSpeed > currentSpeed + accelVal) {
-      currentSpeed += accelVal;
-    } else if (targetSpeed < currentSpeed - accelVal) {
-      currentSpeed -= accelVal;
-    }
-
-    return currentSpeed;
-  }
-
   public void doDrive(double lThrottle, double tilt, double rThrottle) {
-    // account for accidental movement
-    // if (Math.abs(lThrottle) < 0.18) {
-    //   lThrottle = 0;
-    // }
-    // if (Math.abs(tilt) < 0.18) {
-    //   tilt = 0;
-    // }
-    // if (Math.abs(rThrottle) < 0.18) {
-    //   rThrottle = 0;
-    // }
     if (arcade) {     
-      System.out.println(String.format("I am arcade driving with a throttle of %s and a tilt of %s", lThrottle, tilt));
+      System.out.println(String.format("I am tank driving with a lthrottle of %s and a rthrottle of %s", lThrottle, rThrottle));
       // m_drive.arcadeDrive(lThrottle, tilt);
       double currentSpeed = (m_left.get() + m_right.get()) / 2;
       // m_drive.curvatureDrive(lThrottle, tilt * .75, spin);
-      m_drive.tankDrive(rThrottle * .5, lThrottle * .5
-      );
+      m_drive.tankDrive(rThrottle * -.75, lThrottle * .75);
       // m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, spin);
     }
     else {
