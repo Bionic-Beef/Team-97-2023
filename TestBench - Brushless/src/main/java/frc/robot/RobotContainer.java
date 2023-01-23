@@ -31,16 +31,14 @@ public class RobotContainer {
   // x button
   // private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 2);
   // // a button
-  private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 0);
+  // private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 1);
   private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
   //a
-  // private JoystickButton toggleFL = new JoystickButton(joystick1, 0);
-  // //b
-  // private JoystickButton toggleFR = new JoystickButton(joystick1, 1);
-  // //x
-  // private JoystickButton toggleBL = new JoystickButton(joystick1, 2);
-  // //y
-  // private JoystickButton toggleBR = new JoystickButton(joystick1, 3);
+  private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
+  private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
+  private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
+  private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
+
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -53,13 +51,8 @@ public class RobotContainer {
       new RunCommand(
         () -> 
         m_dDriveTrain.doDrive(
-          // Thrustmaster controller:
-          // joystick1.getRawAxis(1),
-          // joystick1.getRawAxis(0)
-          // Xbox controller:
-          filter.calculate(joystick1.getLeftY()),
-          joystick1.getLeftX(),
-          filter.calculate(joystick1.getRightY())
+          joystick1.getLeftY(),
+          joystick1.getRightY()
           ),
       m_dDriveTrain)
     );
@@ -75,24 +68,24 @@ public class RobotContainer {
     // toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
     //   // m_dDriveTrain.toggleTurnSpeed();
     // }));
-    toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
+    // toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
       // m_dDriveTrain.switchMode();
-    }));
+    // }));
     toggleSpin.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.toggleSpin();
     }));
-    // toggleBL.whenPressed(new InstantCommand(() -> {
-    //   m_dDriveTrain.setBL();
-    // }));
-    // toggleBR.whenPressed(new InstantCommand(() -> {
-    //   m_dDriveTrain.setBR();
-    // }));
-    // toggleFL.whenPressed(new InstantCommand(() -> {
-    //   m_dDriveTrain.setFL();
-    // }));
-    // toggleFR.whenPressed(new InstantCommand(() -> {
-    //   m_dDriveTrain.setFR();
-    // }));
+    toggleBL.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.setBL();
+    }));
+    toggleBR.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.setBR();
+    }));
+    toggleFL.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.setFL();
+    }));
+    toggleFR.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.setFR();
+    }));
     
 
   }
