@@ -34,13 +34,10 @@ public class RobotContainer {
   // private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 1);
   private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
   //a
-  private JoystickButton toggleFL = new JoystickButton(joystick1, 1);
-  //b
-  private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
-  //x
+  private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
-  //y
-  private JoystickButton toggleBR = new JoystickButton(joystick1, 4);
+  private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
+  private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
 
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
 

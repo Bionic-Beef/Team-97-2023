@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  // private Victor FL = new Victor(1);
-  // private Victor BL = new Victor(2);
-  // private Victor FR = new Victor(4);
-  // private Victor BR = new Victor(3);
+  private Victor FL = new Victor(4);
+  private Victor BL = new Victor(3);
+  private Victor FR = new Victor(2);
+  private Victor BR = new Victor(1);
 
-  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
-  private CANSparkMax FR = new CANSparkMax(1, MotorType.kBrushless);
-  private CANSparkMax BL = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax BR = new CANSparkMax(3, MotorType.kBrushless);
+  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  // private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
 
   private boolean arcade = true;
   private boolean spin = false;
@@ -45,7 +45,7 @@ public class DriveTrain extends SubsystemBase {
   }
   public void setFL() {
     System.out.println("front left motor toggled");
-    if (FL.get() != 0) {
+    if (FL.get() > 0.2) {
       FL.set(0);
     }
     else {
@@ -54,7 +54,7 @@ public class DriveTrain extends SubsystemBase {
   }
   public void setFR() {
     System.out.println("front right motor toggled");
-    if (FR.get() != 0) {
+    if (FR.get() > 0.2) {
       FR.set(0);
     }
     else {
@@ -63,7 +63,7 @@ public class DriveTrain extends SubsystemBase {
   }
   public void setBL() {
     System.out.println("back left motor toggled");
-    if (BL.get() != 0) {
+    if (BL.get() > 0.2) {
       BL.set(0);
     }
     else {
@@ -72,7 +72,7 @@ public class DriveTrain extends SubsystemBase {
   }
   public void setBR() {
     System.out.println("back right motor toggled");
-    if (BR.get() != 0) {
+    if (BR.get() > 0.2) {
       BR.set(0);
     }
     else {
@@ -85,18 +85,8 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
-    if (arcade) {     
-      System.out.println(String.format("I am tank driving with a lthrottle of %s and a rthrottle of %s", lThrottle, rThrottle));
-      // m_drive.arcadeDrive(lThrottle, tilt);
-      double currentSpeed = (m_left.get() + m_right.get()) / 2;
-      // m_drive.curvatureDrive(lThrottle, tilt * .75, spin);
-      m_drive.tankDrive(rThrottle * -.75, lThrottle * .75);
-      // m_drive.curvatureDrive(accelerate(currentSpeed, lThrottle), tilt, spin);
-    }
-    else {
-      m_drive.tankDrive(rThrottle, lThrottle);
-      System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
-    }
+      m_drive.tankDrive(-lThrottle, rThrottle);
+      // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
  
   @Override
