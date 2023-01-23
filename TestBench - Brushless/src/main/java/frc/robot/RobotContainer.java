@@ -54,15 +54,8 @@ public class RobotContainer {
       new RunCommand(
         () -> 
         m_dDriveTrain.doDrive(
-          // Thrustmaster controller:
-          // joystick1.getRawAxis(1),
-          // joystick1.getRawAxis(0)
-          // Xbox controller:
-          // joystick1.getLeftY(),
-          filter.calculate(joystick1.getLeftY()),
-          joystick1.getLeftX(),
-          // joystick1.getRightY()
-          filter.calculate(joystick1.getLeftX())
+          joystick1.getLeftY(),
+          joystick1.getRightY()
           ),
       m_dDriveTrain)
     );

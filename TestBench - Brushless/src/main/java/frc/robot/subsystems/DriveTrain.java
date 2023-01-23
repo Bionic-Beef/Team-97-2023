@@ -15,21 +15,15 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  private Victor FL = new Victor(1);
-  private Victor BL = new Victor(2);
-  private Victor FR = new Victor(4);
-  private Victor BR = new Victor(3);
-  // private CANSparkMax FL = new CANSparkMax(1, MotorType.kBrushless);
-  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  // private Victor FL = new Victor(1);
+  // private Victor BL = new Victor(2);
+  // private Victor FR = new Victor(4);
+  // private Victor BR = new Victor(3);
 
-  // // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
-  // private CANSparkMax FR = new CANSparkMax(1, MotorType.kBrushless);
-
-  // // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
-  // private CANSparkMax BL = new CANSparkMax(2, MotorType.kBrushless);
-
-  // // private CANSparkMax BR = new CANSparkMax(4, MotorType.kBrushless);
-  // private CANSparkMax BR = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax FR = new CANSparkMax(1, MotorType.kBrushless);
+  private CANSparkMax BL = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax BR = new CANSparkMax(3, MotorType.kBrushless);
 
   private boolean arcade = true;
   private boolean spin = false;
@@ -90,7 +84,7 @@ public class DriveTrain extends SubsystemBase {
     spin = !spin;
   }
 
-  public void doDrive(double lThrottle, double tilt, double rThrottle) {
+  public void doDrive(double lThrottle, double rThrottle) {
     if (arcade) {     
       System.out.println(String.format("I am tank driving with a lthrottle of %s and a rthrottle of %s", lThrottle, rThrottle));
       // m_drive.arcadeDrive(lThrottle, tilt);
