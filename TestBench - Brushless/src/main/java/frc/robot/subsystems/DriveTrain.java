@@ -89,17 +89,14 @@ public class DriveTrain extends SubsystemBase {
       BR.set(0.3);
     }
   }
-  public double goDistance(double distance, double throttle)
-  {
-    double position = (lEncoder.getPosition() + rEncoder.getPosition()) / 2;
-    if(distance <= position)
-    {
-      doDrive(throttle, throttle);
-    }
-    return position;
-  }
+
   public void toggleSpin() {
     spin = !spin;
+  }
+
+  public double getPosition()
+  {
+    return (lEncoder.getPosition() + rEncoder.getPosition()) / 2;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
