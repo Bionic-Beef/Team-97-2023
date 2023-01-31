@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,16 +17,17 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  private Victor FL = new Victor(4);
-  private Victor BL = new Victor(3);
-  private Victor FR = new Victor(2);
-  private Victor BR = new Victor(1);
+  //private Victor FL = new Victor(4);
+  //private Victor BL = new Victor(3);
+  //private Victor FR = new Victor(2);
+  //private Victor BR = new Victor(1);
 
-  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
-  // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
-  // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
-  // private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
-
+  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
+  private RelativeEncoder lEncoder = FL.getEncoder();
+  private RelativeEncoder rEncoder = FR.getEncoder();
   private boolean arcade = true;
   private boolean spin = false;
   private double accelVal = 0.05;
@@ -33,10 +36,17 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   private RelativeEncoder myEncoder;
 
+  private double ftTBMove = 0;
+
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     // m_right.setInverted(true);
     // m_left.setInverted(true);
+    lEncoder.setPositionConversionFactor(1);
+    rEncoder.setPositionConversionFactor(1);
+    lEncoder.setPosition(0);
+    rEncoder.setPosition(0);
+    
 
   }
 
@@ -79,19 +89,29 @@ public class DriveTrain extends SubsystemBase {
       BR.set(0.3);
     }
   }
-  
+  public double goDistance(double distance, double throttle)
+  {
+    double position = (lEncoder.getPosition() + rEncoder.getPosition()) / 2;
+    if(distance <= position)
+    {
+      doDrive(throttle, throttle);
+    }
+    return position;
+  }
   public void toggleSpin() {
     spin = !spin;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
       m_drive.tankDrive(-lThrottle, rThrottle);
+      System.out.println("Positions: " + lEncoder.getPosition()+ ", " + rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
+
   }
 
   @Override

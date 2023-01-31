@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,6 +35,8 @@ public class RobotContainer {
   // private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 1);
   private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
   //a
+  private JoystickButton move3FT = new JoystickButton(joystick1, 6);
+
   private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
@@ -71,6 +74,7 @@ public class RobotContainer {
     // toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
       // m_dDriveTrain.switchMode();
     // }));
+      move3FT.whenPressed(new MoveDistance(m_dDriveTrain, 12));
     toggleSpin.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.toggleSpin();
     }));
