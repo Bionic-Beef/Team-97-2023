@@ -42,12 +42,14 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     // m_right.setInverted(true);
     // m_left.setInverted(true);
-    lEncoder.setPositionConversionFactor(1);
-    rEncoder.setPositionConversionFactor(1);
+    
+    resetEncoders();
+  }
+
+  public void resetEncoders()
+  {
     lEncoder.setPosition(0);
     rEncoder.setPosition(0);
-    
-
   }
 
   public void switchMode() {
@@ -96,12 +98,12 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPosition()
   {
-    return (lEncoder.getPosition() + rEncoder.getPosition()) / 2;
+    return (lEncoder.getPosition() + -rEncoder.getPosition()) / 2;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
       m_drive.tankDrive(-lThrottle, rThrottle);
-      System.out.println("Positions: " + lEncoder.getPosition()+ ", " + rEncoder.getPosition());
+      System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
  

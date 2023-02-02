@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.swing.text.Position;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -61,6 +63,11 @@ public class RobotContainer {
     );
   }
 
+  public void resetEncoders()
+  {
+    m_dDriveTrain.resetEncoders();
+  }
+
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -74,7 +81,7 @@ public class RobotContainer {
     // toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
       // m_dDriveTrain.switchMode();
     // }));
-      move3FT.whenPressed(new MoveDistance(m_dDriveTrain, 12));
+      //move3FT.whenPressed(new MoveDistance(m_dDriveTrain, 12));
     toggleSpin.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.toggleSpin();
     }));
@@ -93,7 +100,7 @@ public class RobotContainer {
     
 
   }
-
+  private boolean test = false;
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -101,6 +108,18 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+   /* if(test == false)
+    {
+      test = true;
+      System.out.println("auto");
+      return new MoveDistance(m_dDriveTrain, 12);
+    }
+    return null;
+    /*if(position == 0)
+    {
+      System.out.println("auto");
+      return new MoveDistance(m_dDriveTrain, 12)
+    }*/
     return null;
   }
 }
