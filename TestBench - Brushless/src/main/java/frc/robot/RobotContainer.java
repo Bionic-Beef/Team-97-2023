@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,6 +46,8 @@ public class RobotContainer {
   private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
 
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
+
+  private int stage;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -100,26 +103,43 @@ public class RobotContainer {
     
 
   }
-  private boolean test = false;
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-   /* if(test == false)
+    if(stage == 1)
     {
-      test = true;
-      System.out.println("auto");
-      return new MoveDistance(m_dDriveTrain, 12);
+      if(m_dDriveTrain.getPosition() < 10)
+      {
+        return new MoveDistance(m_dDriveTrain, 10);
+      }
+      else
+      {
+        stage++;
+      }
     }
-    return null;
-    /*if(position == 0)
+    else if(stage == 2)
     {
-      System.out.println("auto");
-      return new MoveDistance(m_dDriveTrain, 12)
-    }*/
-    return null;
+      //unloads game piece
+      stage++;
+    }
+    else if(stage == 3)
+    {
+      if(m_dDriveTrain.getPosition() > -10)
+      {
+        return new MoveDistance(m_dDriveTrain, -10);
+      }
+      else{
+        stage++;
+      }
+    }
+    else if (stage == 4)
+    {
+      //balances on seesaw
+    }
+    return new MoveDistance(m_dDriveTrain, 0);
   }
 }
