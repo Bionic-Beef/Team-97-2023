@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
@@ -28,7 +29,7 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
   private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  
+  private ADIS16448_IMU m_IMU = new ADIS16448_IMU();
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
@@ -75,6 +76,14 @@ public class DriveTrain extends SubsystemBase {
     else {
       BR.set(0.3);
     }
+  }
+  public void calibrateIMU() {
+    m_IMU.calibrate();
+  }
+  //y is the forward-backward tilt
+  public double getYAngle() {
+    System.out.println(String.format("Angle Y: %s", m_IMU.getGyroAngleY()));
+    return m_IMU.getGyroAngleY();
   }
 
   public void doDrive(double lThrottle, double rThrottle) {

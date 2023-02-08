@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
  */   
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private ADIS16448_IMU m_IMU = new ADIS16448_IMU();
 
   private RobotContainer m_robotContainer;
 
@@ -59,7 +58,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_IMU.calibrate();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -69,9 +67,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    m_IMU.getGyroAngleX();
-    System.out.println(String.format("Angle X: %s; Angle Y: %s; Angle Z: %s", m_IMU.getGyroAngleX(), m_IMU.getGyroAngleY(),
-    m_IMU.getGyroAngleZ()));
   }
 
   @Override
