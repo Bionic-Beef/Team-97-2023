@@ -6,14 +6,11 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
@@ -28,12 +25,6 @@ public class RobotContainer {
   private final DriveTrain m_dDriveTrain = new DriveTrain();
   // private final Joystick joystick1 = new Joystick(0);
   private final XboxController joystick1 = new XboxController(0);
-  // x button
-  // private JoystickButton toggleTurningSpeed = new JoystickButton(joystick1, 2);
-  // // a button
-  // private JoystickButton toggleArcadeDrive = new JoystickButton(joystick1, 1);
-  private JoystickButton toggleSpin = new JoystickButton(joystick1, 5);
-  //a
   private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
@@ -65,15 +56,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
-    //   // m_dDriveTrain.toggleTurnSpeed();
-    // }));
-    // toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
-      // m_dDriveTrain.switchMode();
-    // }));
-    toggleSpin.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.toggleSpin();
-    }));
     toggleBL.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.setBL();
     }));

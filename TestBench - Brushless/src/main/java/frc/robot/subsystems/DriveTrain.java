@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
@@ -26,12 +25,10 @@ public class DriveTrain extends SubsystemBase {
   // private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
 
   private boolean arcade = true;
-  private boolean spin = false;
-  private double accelVal = 0.05;
   private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
   private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  private RelativeEncoder myEncoder;
+  
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
@@ -78,10 +75,6 @@ public class DriveTrain extends SubsystemBase {
     else {
       BR.set(0.3);
     }
-  }
-  
-  public void toggleSpin() {
-    spin = !spin;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
