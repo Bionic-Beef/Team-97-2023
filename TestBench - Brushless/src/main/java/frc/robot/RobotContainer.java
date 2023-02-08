@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutonomousCommandGroup;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
@@ -110,36 +111,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if(stage == 1)
-    {
-      if(m_dDriveTrain.getPosition() < 10)
-      {
-        return new MoveDistance(m_dDriveTrain, 10);
-      }
-      else
-      {
-        stage++;
-      }
-    }
-    else if(stage == 2)
-    {
-      //unloads game piece
-      stage++;
-    }
-    else if(stage == 3)
-    {
-      if(m_dDriveTrain.getPosition() > -10)
-      {
-        return new MoveDistance(m_dDriveTrain, -10);
-      }
-      else{
-        stage++;
-      }
-    }
-    else if (stage == 4)
-    {
-      //balances on seesaw
-    }
-    return new MoveDistance(m_dDriveTrain, 0);
+    return new AutonomousCommandGroup(m_dDriveTrain);
   }
 }
