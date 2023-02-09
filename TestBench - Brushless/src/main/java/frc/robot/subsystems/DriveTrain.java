@@ -77,6 +77,21 @@ public class DriveTrain extends SubsystemBase {
       BR.set(0.3);
     }
   }
+  //always relative to the initial calibration
+
+  public void setMotorsBasedOnZAngle(int targetAngle, double currentAngle) {
+    System.out.println("current angle: " + currentAngle);
+    if (Math.abs(currentAngle - targetAngle) > 5) {
+      // target is to the right
+      if (targetAngle - currentAngle < 0) {
+        doDrive(0.25, -.25);
+      }
+      else {
+        doDrive(-.25, .25);
+      }
+    }
+
+  }
   public void calibrateIMU() {
     m_IMU.calibrate();
   }

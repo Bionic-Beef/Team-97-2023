@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.utilities.GyroPIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -14,6 +15,7 @@ public class AutonomousBalance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_driveTrain;
   private double yAngle;
+  private Timer m_timer;
 
   /**
    * Creates a new ExampleCommand.
@@ -28,14 +30,26 @@ public class AutonomousBalance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_driveTrain.calibrateIMU();
+    m_timer = new Timer();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+      if (m_timer.hasElapsed(30)) {
+        yAngle = m_driveTrain.getYAngle();
+        System.out.println("pid output: " + GyroPIDController.calculate(yAngle));
+        if (yAngle < -13) {
+            m_driveTrain.doDrive(.3, .3);
+        } else if (yAngle > 13) {
+            m_driveTrain.doDrive(-.3, -.3);
+        }
+      }
     // if (m_driveTrain.getYAngle() > 5) {
-    yAngle = m_driveTrain.getYAngle();
-    System.out.println("pid output: " + GyroPIDController.calculate(yAngle));
+    //positive is...
+    
   }
 
   // Called once the command ends or is interrupted.
