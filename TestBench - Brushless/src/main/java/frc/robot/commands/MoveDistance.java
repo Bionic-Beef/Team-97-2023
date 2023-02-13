@@ -7,7 +7,9 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.math.Drake;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.lang.Math;
 
@@ -17,11 +19,11 @@ public class MoveDistance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   
-  PIDController pid = new PIDController(.5, 0, .5);
+  PIDController pid = new PIDController(.25, 0, .1);
   //position variables are measured in encoder ticks
   private double currentPosition;
   private double targetPosition;
-  private double wheelRadius;
+  private double wheelRadius = 3.5;
   /**
    * Creates a new ExampleCommand.
    *
@@ -29,7 +31,7 @@ public class MoveDistance extends CommandBase {
    */
   public MoveDistance(DriveTrain train, double togo) {
     m_DriveTrain = train;
-    targetPosition = togo / (wheelRadius * Math.PI);
+    targetPosition = togo / (2*wheelRadius * Math.PI);
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveTrain);
@@ -39,6 +41,8 @@ public class MoveDistance extends CommandBase {
   @Override
   public void initialize()
   {
+    pid.reset();
+    m_DriveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -61,9 +65,15 @@ public class MoveDistance extends CommandBase {
 
   public void goDistance(double targetPosition, double currentPosition)
   {
-    if(targetPosition <= currentPosition)
+    if(targetPosition >= currentPosition)
     {
-      m_DriveTrain.doDrive(pid.calculate(currentPosition, targetPosition), pid.calculate(currentPosition, targetPosition));
+      double motorOutput = MathUtil.clamp(pid.calculate(currentPosition, targetPosition), -1, 1);
+      System.out.println("current position:" + currentPosition + "target position:" + targetPosition);
+      SmartDashboard.putNumber("Current position", currentPosition);
+      SmartDashboard.putNumber("Target position", targetPosition);
+      SmartDashboard.putNumber("PID Output", motorOutput);
+      System.out.println("pid output: " + motorOutput);
+      m_DriveTrain.doDrive(motorOutput, motorOutput);
     }
   }
 }

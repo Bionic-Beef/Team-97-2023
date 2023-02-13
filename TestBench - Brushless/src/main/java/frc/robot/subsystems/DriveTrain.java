@@ -98,7 +98,7 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPosition()
   {
-    return (lEncoder.getPosition() + -rEncoder.getPosition()) / 2;
+    return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / 12.75;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
