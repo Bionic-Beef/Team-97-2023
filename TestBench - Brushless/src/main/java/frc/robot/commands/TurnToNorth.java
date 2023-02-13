@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TurnToNorth extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_driveTrain;
-  private ADIS16448_IMU m_IMU = new ADIS16448_IMU();
+  private ADIS16448_IMU m_IMU;
   private double currentAngle;
   private final double targetAngle = 0;
 
@@ -22,10 +22,11 @@ public class TurnToNorth extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TurnToNorth(DriveTrain m_driveTrain) {
+  public TurnToNorth(DriveTrain m_driveTrain, ADIS16448_IMU m_IMU) {
     this.m_driveTrain = m_driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_driveTrain);
+    this.m_IMU = m_IMU;
   }
 
   // Called when the command is initially scheduled.

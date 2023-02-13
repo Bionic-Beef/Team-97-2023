@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutonomousBalance;
 import frc.robot.commands.TurnToEast;
 import frc.robot.commands.TurnToNorth;
 import frc.robot.commands.TurnToSouth;
@@ -33,15 +35,15 @@ public class RobotContainer {
   // private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   // private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   // private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
-
+  private ADIS16448_IMU m_IMU = m_dDriveTrain.getImu();
   private JoystickButton turnToNorth = new JoystickButton(joystick1, 4);
   private JoystickButton turnToWest = new JoystickButton(joystick1, 3);
   private JoystickButton turnToEast = new JoystickButton(joystick1, 2);
   private JoystickButton turnToSouth = new JoystickButton(joystick1, 1);
-  private Command TurnToNorth = new TurnToNorth(m_dDriveTrain);
-  private Command TurnToSouth = new TurnToSouth(m_dDriveTrain);
-  private Command TurnToEast = new TurnToEast(m_dDriveTrain);
-  private Command TurnToWest = new TurnToWest(m_dDriveTrain);
+  private Command TurnToNorth = new TurnToNorth(m_dDriveTrain, m_IMU);
+  private Command TurnToSouth = new TurnToSouth(m_dDriveTrain, m_IMU);
+  private Command TurnToEast = new TurnToEast(m_dDriveTrain, m_IMU);
+  private Command TurnToWest = new TurnToWest(m_dDriveTrain, m_IMU);
 
 
 
@@ -98,6 +100,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return new AutonomousBalance(m_dDriveTrain);
   }
 }

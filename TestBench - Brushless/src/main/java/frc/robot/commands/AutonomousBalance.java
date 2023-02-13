@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.utilities.GyroPIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -33,20 +34,25 @@ public class AutonomousBalance extends CommandBase {
   public void initialize() {
     m_driveTrain.calibrateIMU();
     m_timer = new Timer();
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if (m_timer.hasElapsed(30)) {
+      if (m_timer.hasElapsed(20)) {
         yAngle = m_driveTrain.getYAngle();
-        System.out.println("pid output: " + GyroPIDController.calculate(yAngle));
-        if (yAngle < -13) {
-            m_driveTrain.doDrive(.3, .3);
-        } else if (yAngle > 13) {
-            m_driveTrain.doDrive(-.3, -.3);
-        }
-      }
+        double pidOutput = -GyroPIDController.calculate(yAngle);
+        System.out.println("pid output: " + pidOutput);
+        double clampedPIDOutput = MathUtil.clamp(pidOutput, -.25, .25);
+        System.out.println("clamped pid output: " + clampedPIDOutput);
+        // m_driveTrain.doDrive(clampedPIDOutput, clampedPIDOutput);
+        
+    }
+    else {
+      System.out.println("waiting to drive. time elapsed: " + m_timer.get());
+      m_driveTrain.doDrive(0, 0);
+    }
     // if (m_driveTrain.getYAngle() > 5) {
     //positive is...
     

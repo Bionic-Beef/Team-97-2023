@@ -15,15 +15,15 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveTrain extends SubsystemBase {
-  private Victor FL = new Victor(4);
-  private Victor BL = new Victor(3);
-  private Victor FR = new Victor(2);
-  private Victor BR = new Victor(1);
+  // private Victor FL = new Victor(4);
+  // private Victor BL = new Victor(3);
+  // private Victor FR = new Victor(2);
+  // private Victor BR = new Victor(1);
 
-  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
-  // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
-  // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
-  // private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
+  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
 
   private boolean arcade = true;
   private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
@@ -92,6 +92,9 @@ public class DriveTrain extends SubsystemBase {
     }
 
   }
+  public ADIS16448_IMU getImu() {
+    return m_IMU;
+  }
   public void calibrateIMU() {
     m_IMU.calibrate();
   }
@@ -99,6 +102,11 @@ public class DriveTrain extends SubsystemBase {
   public double getYAngle() {
     System.out.println(String.format("Angle Y: %s", m_IMU.getGyroAngleY()));
     return m_IMU.getGyroAngleY();
+  }
+  public double getZAngle() {
+    System.out.println(String.format("Angle Z: %s", m_IMU.getGyroAngleZ()));
+    return m_IMU.getGyroAngleZ();
+
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
