@@ -19,7 +19,7 @@ public class MoveDistance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   
-  PIDController pid = new PIDController(.25, 0, .1);
+  PIDController pid = new PIDController(.25, .05, 0);
   //position variables are measured in encoder ticks
   private double currentPosition;
   private double targetPosition;

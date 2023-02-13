@@ -98,12 +98,13 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPosition()
   {
+    //12.75 is the gearbox ratio
     return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / 12.75;
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
       m_drive.tankDrive(-lThrottle, rThrottle);
-      System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
+      // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
  
