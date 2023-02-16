@@ -9,6 +9,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.utilities.GyroPIDController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -41,12 +42,12 @@ public class AutonomousBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if (m_timer.hasElapsed(20)) {
+      if (m_timer.hasElapsed(25)) {
         // find up-down (y) angle, calculate PID output
         yAngle = m_driveTrain.getYAngle();
         double pidOutputY = GyroPIDController.calculateY(yAngle);
         System.out.println("y pid output: " + pidOutputY);
-        double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.25, .25);
+        double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.5, .5);
         System.out.println("clamped y pid output: " + clampedPIDOutputY);
         // m_driveTrain.doDrive(clampedPIDOutputY, clampedPIDOutputY);
 
@@ -54,24 +55,36 @@ public class AutonomousBalance extends CommandBase {
         zAngle = m_driveTrain.getZAngle();
         double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
         System.out.println("z pid output: " + pidOutputZ);
-        double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.25, .25);
+        double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
         System.out.println("clamped z pid output: " + clampedPIDOutputZ);
 
         double leftThrottle = clampedPIDOutputY;
         double rightThrottle = clampedPIDOutputY;
-
+        // double leftThrottle = 0.2;
+        // double rightThrottle = 0.2;
         // calculate overall motor settings based on z and y pid outputs
-        m_driveTrain.doDrive(clampedPIDOutputZ, -clampedPIDOutputZ);
+        // m_driveTrain.doDrive(clampedPIDOutputZ, -clampedPIDOutputZ);
         if (clampedPIDOutputZ < 0) {
-          rightThrottle = 1 - Math.abs(clampedPIDOutputZ);
+          // rightThrottle *= 0.5;
+          rightThrottle *= (1 - Math.abs(clampedPIDOutputZ));
         }
         else if (clampedPIDOutputZ > 0) {
-          leftThrottle = 1 - Math.abs(clampedPIDOutputZ);
+          // leftThrottle *= .5;
+          leftThrottle *= (1 - Math.abs(clampedPIDOutputZ));
         }
         //clockwise/right is positive for arcadeDrive, make sure pid/gyro is consistent
         // m_driveTrain.arcadeDrive(clampedPIDOutputY, clampedPIDOutputZ);
-        m_driveTrain.doDrive(leftThrottle, rightThrottle);
+        SmartDashboard.putNumber("Z PID Output", clampedPIDOutputZ);
+        SmartDashboard.putNumber("Y PID Output", clampedPIDOutputY);
+        SmartDashboard.putNumber("Left throttle", leftThrottle);
+        SmartDashboard.putNumber("Right throttle", rightThrottle);
+        SmartDashboard.putNumber("Y angle", yAngle);
+        SmartDashboard.putNumber("Z angle", zAngle);
 
+        if (Math.abs(yAngle) > 3) {
+          m_driveTrain.doDrive(leftThrottle, rightThrottle);
+
+        }
     }
     else {
       System.out.println("waiting to drive. time elapsed: " + m_timer.get());

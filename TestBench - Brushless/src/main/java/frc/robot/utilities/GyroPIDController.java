@@ -3,8 +3,8 @@ package frc.robot.utilities;
 import edu.wpi.first.math.controller.PIDController;
 
 public class GyroPIDController {
-    public static PIDController y_PID = new PIDController(0.05, 0, 0);
-    public static PIDController z_PID = new PIDController(0.1, 0, 0);
+    public static PIDController y_PID = new PIDController(0.04, 0, 0.1);
+    public static PIDController z_PID = new PIDController(0.004, 0, 0.1);
 
     //returns motor output
     public static double calculateY(double yRotation) {

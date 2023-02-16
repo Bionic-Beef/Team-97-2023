@@ -89,8 +89,6 @@ public class RobotContainer {
     turnToEast.whenPressed(TurnToEast);
     turnToSouth.whenPressed(TurnToSouth);
     turnToWest.whenPressed(TurnToWest);
-    
-
   }
 
   /**
