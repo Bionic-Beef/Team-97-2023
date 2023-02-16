@@ -106,12 +106,14 @@ public class DriveTrain extends SubsystemBase {
   public double getZAngle() {
     System.out.println(String.format("Angle Z: %s", m_IMU.getGyroAngleZ()));
     return m_IMU.getGyroAngleZ();
-
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
       m_drive.tankDrive(-lThrottle, rThrottle);
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
+  }
+  public void arcadeDrive(double throttle, double rotation) {
+    m_drive.arcadeDrive(throttle, rotation);
   }
  
   @Override

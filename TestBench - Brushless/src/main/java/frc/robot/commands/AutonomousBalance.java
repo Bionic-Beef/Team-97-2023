@@ -16,6 +16,7 @@ public class AutonomousBalance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_driveTrain;
   private double yAngle;
+  private double zAngle;
   private Timer m_timer;
 
   /**
@@ -41,21 +42,41 @@ public class AutonomousBalance extends CommandBase {
   @Override
   public void execute() {
       if (m_timer.hasElapsed(20)) {
+        // find up-down (y) angle, calculate PID output
         yAngle = m_driveTrain.getYAngle();
-        double pidOutput = -GyroPIDController.calculate(yAngle);
-        System.out.println("pid output: " + pidOutput);
-        double clampedPIDOutput = MathUtil.clamp(pidOutput, -.25, .25);
-        System.out.println("clamped pid output: " + clampedPIDOutput);
-        // m_driveTrain.doDrive(clampedPIDOutput, clampedPIDOutput);
-        
+        double pidOutputY = GyroPIDController.calculateY(yAngle);
+        System.out.println("y pid output: " + pidOutputY);
+        double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.25, .25);
+        System.out.println("clamped y pid output: " + clampedPIDOutputY);
+        // m_driveTrain.doDrive(clampedPIDOutputY, clampedPIDOutputY);
+
+        // find left-right (z) angle, calculate PID output
+        zAngle = m_driveTrain.getZAngle();
+        double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
+        System.out.println("z pid output: " + pidOutputZ);
+        double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.25, .25);
+        System.out.println("clamped z pid output: " + clampedPIDOutputZ);
+
+        double leftThrottle = clampedPIDOutputY;
+        double rightThrottle = clampedPIDOutputY;
+
+        // calculate overall motor settings based on z and y pid outputs
+        m_driveTrain.doDrive(clampedPIDOutputZ, -clampedPIDOutputZ);
+        if (clampedPIDOutputZ < 0) {
+          rightThrottle = 1 - Math.abs(clampedPIDOutputZ);
+        }
+        else if (clampedPIDOutputZ > 0) {
+          leftThrottle = 1 - Math.abs(clampedPIDOutputZ);
+        }
+        //clockwise/right is positive for arcadeDrive, make sure pid/gyro is consistent
+        // m_driveTrain.arcadeDrive(clampedPIDOutputY, clampedPIDOutputZ);
+        m_driveTrain.doDrive(leftThrottle, rightThrottle);
+
     }
     else {
       System.out.println("waiting to drive. time elapsed: " + m_timer.get());
       m_driveTrain.doDrive(0, 0);
     }
-    // if (m_driveTrain.getYAngle() > 5) {
-    //positive is...
-    
   }
 
   // Called once the command ends or is interrupted.
