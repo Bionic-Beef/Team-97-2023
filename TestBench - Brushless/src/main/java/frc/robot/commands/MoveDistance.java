@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+
 import frc.robot.utilities.GyroPIDController;
 import edu.wpi.first.math.Drake;
 import edu.wpi.first.math.MathUtil;
@@ -28,6 +29,7 @@ public class MoveDistance extends CommandBase {
   private double rightThrottle;
   private double wheelRadius = 3.5;
   private double zAngle;
+
   /**
    * Creates a new ExampleCommand.
    *
@@ -35,6 +37,7 @@ public class MoveDistance extends CommandBase {
    */
   public MoveDistance(DriveTrain train, double togo) {
     m_DriveTrain = train;
+
     targetPosition = togo / (2*wheelRadius * Math.PI);
     
     // Use addRequirements() here to declare subsystem dependencies.
