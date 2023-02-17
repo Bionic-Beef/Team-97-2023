@@ -39,6 +39,9 @@ public class RobotContainer {
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
 
+  private JoystickButton upAccel = new JoystickButton(joystick1, 8);
+  private JoystickButton downAccel = new JoystickButton(joystick1, 7);
+
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -87,6 +90,12 @@ public class RobotContainer {
       m_dDriveTrain.setFR();
     }));
     
+    upAccel.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.upFactor();
+    }));
+    downAccel.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.downFactor();
+    }));
 
   }
 
