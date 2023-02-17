@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.utilities.GyroPIDController;
 import edu.wpi.first.math.Drake;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -23,7 +24,10 @@ public class MoveDistance extends CommandBase {
   //position variables are measured in encoder ticks
   private double currentPosition;
   private double targetPosition;
+  private double leftThrottle;
+  private double rightThrottle;
   private double wheelRadius = 3.5;
+  private double zAngle;
   /**
    * Creates a new ExampleCommand.
    *
@@ -50,7 +54,11 @@ public class MoveDistance extends CommandBase {
   public void execute()
   {
     currentPosition = m_DriveTrain.getPosition();
-    goDistance(targetPosition, currentPosition);
+    zAngle = m_DriveTrain.getZAngle();
+    SmartDashboard.putNumber("Z angle", zAngle);
+    double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
+    double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
+    goDistance(targetPosition, currentPosition, clampedPIDOutputZ);
       
   }
   // Called once the command ends or is interrupted.
@@ -63,17 +71,27 @@ public class MoveDistance extends CommandBase {
     return currentPosition > targetPosition;
   }
 
-  public void goDistance(double targetPosition, double currentPosition)
+  public void goDistance(double targetPosition, double currentPosition, double zPIDOutput)
   {
     if(targetPosition >= currentPosition)
     {
       double motorOutput = MathUtil.clamp(pid.calculate(currentPosition, targetPosition), -1, 1);
+      leftThrottle = motorOutput;
+      rightThrottle = motorOutput;
       System.out.println("current position:" + currentPosition + "target position:" + targetPosition);
       SmartDashboard.putNumber("Current position", currentPosition);
       SmartDashboard.putNumber("Target position", targetPosition);
       SmartDashboard.putNumber("PID Output", motorOutput);
       System.out.println("pid output: " + motorOutput);
-      m_DriveTrain.doDrive(motorOutput, motorOutput);
+      if (zPIDOutput > 0) {
+        rightThrottle *= (1 - Math.abs(zPIDOutput));
+      }
+      else {
+        leftThrottle *= (1 - Math.abs(zPIDOutput));
+      }
+      SmartDashboard.putNumber("Left Throttle", leftThrottle);
+      SmartDashboard.putNumber("Right Throttle", rightThrottle);
+      m_DriveTrain.doDrive(leftThrottle, rightThrottle);
     }
   }
 }
