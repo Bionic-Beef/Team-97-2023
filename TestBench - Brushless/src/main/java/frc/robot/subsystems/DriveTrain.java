@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+import com.fasterxml.jackson.databind.introspect.ClassIntrospector.MixInResolver;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -27,6 +30,12 @@ public class DriveTrain extends SubsystemBase {
   private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
   private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
 
+  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
+  private RelativeEncoder lEncoder = FL.getEncoder();
+  private RelativeEncoder rEncoder = FR.getEncoder();
   private boolean arcade = true;
   private boolean spin = false;
   private double accelVal = 0.05;
@@ -34,13 +43,21 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   private RelativeEncoder myEncoder;
+  private ADIS16448_IMU m_IMU = new ADIS16448_IMU();
   private int accelFactor = 0;
 
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     // m_right.setInverted(true);
     // m_left.setInverted(true);
+    
+    resetEncoders();
+  }
 
+  public void resetEncoders()
+  {
+    lEncoder.setPosition(0);
+    rEncoder.setPosition(0);
   }
 
   public void switchMode() {
@@ -93,10 +110,31 @@ public class DriveTrain extends SubsystemBase {
       BR.set(0.3);
     }
   }
-  
+
   public void toggleSpin() {
     spin = !spin;
   }
+
+  public double getPosition()
+  {
+    //12.75 is the gearbox ratio
+    return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / 12.75;
+  }
+  public ADIS16448_IMU getImu() {
+    return m_IMU;
+  }
+  public void calibrateIMU() {
+    m_IMU.calibrate();
+  }
+    //y is the forward-backward tilt
+    public double getYAngle() {
+      System.out.println(String.format("Angle Y: %s", m_IMU.getGyroAngleY()));
+      return m_IMU.getGyroAngleY();
+    }
+    public double getZAngle() {
+      System.out.println(String.format("Angle Z: %s", m_IMU.getGyroAngleZ()));
+      return m_IMU.getGyroAngleZ();
+    }
 
   public void doDrive(double lThrottle, double rThrottle) {
       if (accelFactor > 0 && Math.abs(lThrottle) > 0 && Math.abs(rThrottle) > 0) {
@@ -110,12 +148,14 @@ public class DriveTrain extends SubsystemBase {
         if (rneg) { rThrottle *= -1; }
       }
       m_drive.tankDrive(-lThrottle, rThrottle);
+      // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    
+
   }
 
   @Override

@@ -6,8 +6,12 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import frc.robot.utilities.GyroPIDController;
 import edu.wpi.first.math.Drake;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.lang.Math;
 
@@ -17,11 +21,15 @@ public class MoveDistance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   
-  PIDController pid = new PIDController(.5, 0, .5);
+  PIDController pid = new PIDController(.25, .05, 0);
   //position variables are measured in encoder ticks
   private double currentPosition;
   private double targetPosition;
-  private double wheelRadius;
+  private double leftThrottle;
+  private double rightThrottle;
+  private double wheelRadius = 3.5;
+  private double zAngle;
+
   /**
    * Creates a new ExampleCommand.
    *
@@ -29,7 +37,8 @@ public class MoveDistance extends CommandBase {
    */
   public MoveDistance(DriveTrain train, double togo) {
     m_DriveTrain = train;
-    targetPosition = togo / (wheelRadius * Math.PI);
+
+    targetPosition = togo / (2*wheelRadius * Math.PI);
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveTrain);
@@ -39,6 +48,8 @@ public class MoveDistance extends CommandBase {
   @Override
   public void initialize()
   {
+    pid.reset();
+    m_DriveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,7 +57,11 @@ public class MoveDistance extends CommandBase {
   public void execute()
   {
     currentPosition = m_DriveTrain.getPosition();
-    goDistance(targetPosition, currentPosition);
+    zAngle = m_DriveTrain.getZAngle();
+    SmartDashboard.putNumber("Z angle", zAngle);
+    double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
+    double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
+    goDistance(targetPosition, currentPosition, clampedPIDOutputZ);
       
   }
   // Called once the command ends or is interrupted.
@@ -59,11 +74,27 @@ public class MoveDistance extends CommandBase {
     return currentPosition > targetPosition;
   }
 
-  public void goDistance(double targetPosition, double currentPosition)
+  public void goDistance(double targetPosition, double currentPosition, double zPIDOutput)
   {
-    if(targetPosition <= currentPosition)
+    if(targetPosition >= currentPosition)
     {
-      m_DriveTrain.doDrive(pid.calculate(currentPosition, targetPosition), pid.calculate(currentPosition, targetPosition));
+      double motorOutput = MathUtil.clamp(pid.calculate(currentPosition, targetPosition), -1, 1);
+      leftThrottle = motorOutput;
+      rightThrottle = motorOutput;
+      System.out.println("current position:" + currentPosition + "target position:" + targetPosition);
+      SmartDashboard.putNumber("Current position", currentPosition);
+      SmartDashboard.putNumber("Target position", targetPosition);
+      SmartDashboard.putNumber("PID Output", motorOutput);
+      System.out.println("pid output: " + motorOutput);
+      if (zPIDOutput > 0) {
+        rightThrottle *= (1 - Math.abs(zPIDOutput));
+      }
+      else {
+        leftThrottle *= (1 - Math.abs(zPIDOutput));
+      }
+      SmartDashboard.putNumber("Left Throttle", leftThrottle);
+      SmartDashboard.putNumber("Right Throttle", rightThrottle);
+      m_DriveTrain.doDrive(leftThrottle, rightThrottle);
     }
   }
 }
