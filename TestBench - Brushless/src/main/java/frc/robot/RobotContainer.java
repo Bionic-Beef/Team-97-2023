@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -13,6 +14,10 @@ import frc.robot.commands.TurnToEast;
 import frc.robot.commands.TurnToNorth;
 import frc.robot.commands.TurnToSouth;
 import frc.robot.commands.TurnToWest;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutonomousCommandGroup;
+import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -47,7 +52,11 @@ public class RobotContainer {
 
 
 
+  private JoystickButton upAccel = new JoystickButton(joystick1, 8);
+  private JoystickButton downAccel = new JoystickButton(joystick1, 7);
+
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -89,8 +98,16 @@ public class RobotContainer {
     turnToEast.whenPressed(TurnToEast);
     turnToSouth.whenPressed(TurnToSouth);
     turnToWest.whenPressed(TurnToWest);
-  }
+    
+    upAccel.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.upFactor();
+    }));
+    downAccel.whenPressed(new InstantCommand(() -> {
+      m_dDriveTrain.downFactor();
+    }));
 
+  }
+  
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -98,6 +115,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousBalance(m_dDriveTrain);
+    return new AutonomousCommandGroup(m_dDriveTrain);
   }
 }
