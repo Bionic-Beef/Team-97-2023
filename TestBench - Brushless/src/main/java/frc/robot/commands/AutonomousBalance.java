@@ -4,10 +4,11 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.utilities.GyroPIDController;
+import utilities.IMUWrapper;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,6 +20,8 @@ public class AutonomousBalance extends CommandBase {
   private double yAngle;
   private double zAngle;
   private Timer m_timer;
+  private PIDController gyroYPID = new PIDController(Constants.GyroYKP, Constants.GyroYKI, Constants.GyroYKD);
+  private PIDController gyroZPID = new PIDController(Constants.GyroZKP, Constants.GyroZKI, Constants.GyroZKD);
 
   /**
    * Creates a new ExampleCommand.
@@ -34,7 +37,12 @@ public class AutonomousBalance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_driveTrain.calibrateIMU();
+    gyroYPID.setSetpoint(0);
+    gyroYPID.reset();
+    gyroZPID.setSetpoint(0);
+    gyroZPID.reset();
+
+    // IMUWrapper.calibrate();
     m_timer = new Timer();
     m_timer.start();
   }
@@ -44,16 +52,16 @@ public class AutonomousBalance extends CommandBase {
   public void execute() {
       if (m_timer.hasElapsed(25)) {
         // find up-down (y) angle, calculate PID output
-        yAngle = m_driveTrain.getYAngle();
-        double pidOutputY = GyroPIDController.calculateY(yAngle);
+        yAngle = IMUWrapper.getYAngle();
+        double pidOutputY = gyroYPID.calculate(yAngle);
         System.out.println("y pid output: " + pidOutputY);
         double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.5, .5);
         System.out.println("clamped y pid output: " + clampedPIDOutputY);
         // m_driveTrain.doDrive(clampedPIDOutputY, clampedPIDOutputY);
 
         // find left-right (z) angle, calculate PID output
-        zAngle = m_driveTrain.getZAngle();
-        double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
+        zAngle = IMUWrapper.getZAngle();
+        double pidOutputZ = -gyroZPID.calculate(zAngle);
         System.out.println("z pid output: " + pidOutputZ);
         double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
         System.out.println("clamped z pid output: " + clampedPIDOutputZ);

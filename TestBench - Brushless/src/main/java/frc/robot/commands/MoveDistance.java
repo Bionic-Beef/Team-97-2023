@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-
+import utilities.IMUWrapper;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -58,12 +58,11 @@ public class MoveDistance extends CommandBase {
   public void execute()
   {
     currentPosition = m_DriveTrain.getPosition();
-    zAngle = m_DriveTrain.getZAngle();
+    zAngle = IMUWrapper.getZAngle();
     SmartDashboard.putNumber("Z angle", zAngle);
     double pidOutputZ = -gyroZPID.calculate(zAngle);
     double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
     goDistance(targetPosition, currentPosition, clampedPIDOutputZ);
-      
   }
   // Called once the command ends or is interrupted.
   @Override
