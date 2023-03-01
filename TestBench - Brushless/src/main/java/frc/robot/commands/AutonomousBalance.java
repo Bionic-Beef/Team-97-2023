@@ -68,10 +68,8 @@ public class AutonomousBalance extends CommandBase {
 
         double leftThrottle = clampedPIDOutputY;
         double rightThrottle = clampedPIDOutputY;
-        // double leftThrottle = 0.2;
-        // double rightThrottle = 0.2;
+
         // calculate overall motor settings based on z and y pid outputs
-        // m_driveTrain.doDrive(clampedPIDOutputZ, -clampedPIDOutputZ);
         if (clampedPIDOutputZ < 0) {
           // rightThrottle *= 0.5;
           rightThrottle *= (1 - Math.abs(clampedPIDOutputZ));
@@ -81,7 +79,6 @@ public class AutonomousBalance extends CommandBase {
           leftThrottle *= (1 - Math.abs(clampedPIDOutputZ));
         }
         //clockwise/right is positive for arcadeDrive, make sure pid/gyro is consistent
-        // m_driveTrain.arcadeDrive(clampedPIDOutputY, clampedPIDOutputZ);
         SmartDashboard.putNumber("Z PID Output", clampedPIDOutputZ);
         SmartDashboard.putNumber("Y PID Output", clampedPIDOutputY);
         SmartDashboard.putNumber("Left throttle", leftThrottle);

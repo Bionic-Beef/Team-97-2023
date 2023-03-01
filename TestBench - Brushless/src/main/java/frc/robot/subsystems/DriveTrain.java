@@ -129,9 +129,6 @@ public class DriveTrain extends SubsystemBase {
       // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
-  public void arcadeDrive(double throttle, double rotation) {
-    m_drive.arcadeDrive(throttle, rotation);
-  }
  
   @Override
   public void periodic() {
