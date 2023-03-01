@@ -4,24 +4,22 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.ExampleSubsystem;
 
-import frc.robot.utilities.GyroPIDController;
-import edu.wpi.first.math.Drake;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.lang.Math;
 
-
 /** An example command that uses an example subsystem. */
 public class MoveDistance extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   
-  PIDController pid = new PIDController(.25, .05, 0);
+  PIDController drivingPID = new PIDController(Constants.EncoderPIDKP, Constants.EncoderPIDKI, Constants.EncoderPIDKD);
+  PIDController gyroZPID = new PIDController(Constants.GyroZKP, Constants.GyroZKI, Constants.GyroZKD);
   //position variables are measured in encoder ticks
   private double currentPosition;
   private double targetPosition;
@@ -48,7 +46,10 @@ public class MoveDistance extends CommandBase {
   @Override
   public void initialize()
   {
-    pid.reset();
+    drivingPID.reset();
+    drivingPID.setSetpoint(targetPosition);
+    gyroZPID.reset();
+    gyroZPID.setSetpoint(0);
     m_DriveTrain.resetEncoders();
   }
 
@@ -59,7 +60,7 @@ public class MoveDistance extends CommandBase {
     currentPosition = m_DriveTrain.getPosition();
     zAngle = m_DriveTrain.getZAngle();
     SmartDashboard.putNumber("Z angle", zAngle);
-    double pidOutputZ = -GyroPIDController.calculateZ(zAngle);
+    double pidOutputZ = -gyroZPID.calculate(zAngle);
     double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
     goDistance(targetPosition, currentPosition, clampedPIDOutputZ);
       
@@ -78,7 +79,7 @@ public class MoveDistance extends CommandBase {
   {
     if(targetPosition >= currentPosition)
     {
-      double motorOutput = MathUtil.clamp(pid.calculate(currentPosition, targetPosition), -1, 1);
+      double motorOutput = MathUtil.clamp(drivingPID.calculate(currentPosition), -1, 1);
       leftThrottle = motorOutput;
       rightThrottle = motorOutput;
       System.out.println("current position:" + currentPosition + "target position:" + targetPosition);
