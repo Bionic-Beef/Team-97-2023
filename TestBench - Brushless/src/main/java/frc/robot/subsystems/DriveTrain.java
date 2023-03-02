@@ -28,12 +28,14 @@ public class DriveTrain extends SubsystemBase {
   private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
   private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
   private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
+  private CANSparkMax ML = new CANSparkMax(6, MotorType.kBrushless);
+  private CANSparkMax MR = new CANSparkMax(7, MotorType.kBrushless);
 
   private RelativeEncoder lEncoder = FL.getEncoder();
   private RelativeEncoder rEncoder = FR.getEncoder();
 
-  private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL);
-  private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR);
+  private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL, ML);
+  private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR, MR);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   private int accelFactor = 0;
 
