@@ -17,15 +17,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.lang.Math;
 
 public class DriveTrain extends SubsystemBase {
-  // private Victor FL = new Victor(4);
-  // private Victor BL = new Victor(3);
-  // private Victor FR = new Victor(2);
-  // private Victor BR = new Victor(1);
+  private Victor FL = new Victor(4);
+  private Victor BL = new Victor(3);
+  private Victor FR = new Victor(2);
+  private Victor BR = new Victor(1);
 
-  private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
-  private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
-  private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
+  // private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
+  // private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  // private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
+  // private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
 
   private boolean arcade = true;
   private boolean spin = false;
@@ -108,6 +108,11 @@ public class DriveTrain extends SubsystemBase {
 
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
+      }
+      if(Math.abs(lThrottle) - Math.abs(rThrottle) > .05)
+      {
+        lThrottle *= .8;
+        rThrottle *= .8;
       }
       m_drive.tankDrive(-lThrottle, rThrottle);
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
