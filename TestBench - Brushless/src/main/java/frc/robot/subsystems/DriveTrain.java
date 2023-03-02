@@ -109,10 +109,13 @@ public class DriveTrain extends SubsystemBase {
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
       }
-      if(Math.abs(lThrottle) - Math.abs(rThrottle) > .05)
+      if(Math.abs(lThrottle)>Math.abs(rThrottle))
       {
-        lThrottle *= .8;
-        rThrottle *= .8;
+        rThrottle += (lThrottle - rThrottle)/2;
+      }
+      else if(Math.abs(rThrottle)>Math.abs(lThrottle))
+      {
+        lThrottle += (rThrottle - lThrottle)/2;
       }
       m_drive.tankDrive(-lThrottle, rThrottle);
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
