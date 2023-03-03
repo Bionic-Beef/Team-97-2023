@@ -7,10 +7,13 @@ package frc.robot;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.commands.TurnToEast;
+import frc.robot.commands.TurnToNorth;
+import frc.robot.commands.TurnToSouth;
+import frc.robot.commands.TurnToWest;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
-import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,11 +32,16 @@ public class RobotContainer {
   private final DriveTrain m_dDriveTrain = new DriveTrain();
   // private final Joystick joystick1 = new Joystick(0);
   private final XboxController joystick1 = new XboxController(0);
-  
   private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
+  // private Command TurnToNorth = new TurnToNorth(m_dDriveTrain);
+  // private Command TurnToSouth = new TurnToSouth(m_dDriveTrain);
+  // private Command TurnToEast = new TurnToEast(m_dDriveTrain);
+  // private Command TurnToWest = new TurnToWest(m_dDriveTrain);
+
+
 
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
   private JoystickButton downAccel = new JoystickButton(joystick1, 7);
@@ -77,6 +85,10 @@ public class RobotContainer {
     toggleFR.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.setFR();
     }));
+    // turnToNorth.whenPressed(TurnToNorth);
+    // turnToEast.whenPressed(TurnToEast);
+    // turnToSouth.whenPressed(TurnToSouth);
+    // turnToWest.whenPressed(TurnToWest);
     
     upAccel.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.upFactor();
@@ -93,7 +105,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // return new AutonomousCommandGroup(m_dDriveTrain);
-    return new MoveDistance(m_dDriveTrain, 100);
+    // An ExampleCommand will run in autonomous
+    return new AutonomousCommandGroup(m_dDriveTrain);
   }
 }

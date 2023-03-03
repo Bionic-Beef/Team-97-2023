@@ -14,7 +14,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import utilities.IMUWrapper;
 
 import java.lang.Math;
 
@@ -96,19 +95,26 @@ public class DriveTrain extends SubsystemBase {
       BR.set(0.3);
     }
   }
+  //always relative to the initial calibration
+
+  public void setMotorsBasedOnZAngle(int targetAngle, double currentAngle) {
+    System.out.println("current angle: " + currentAngle);
+    if (Math.abs(currentAngle - targetAngle) > 5) {
+      // target is to the right
+      if (targetAngle - currentAngle < 0) {
+        doDrive(0.25, -.25);
+      }
+      else {
+        doDrive(-.25, .25);
+      }
+    }
+
+  }
+
   public double getPosition()
   {
     return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
   }
-    //y is the forward-backward tilt
-    public double getYAngle() {
-      System.out.println(String.format("Angle Y: %s", IMUWrapper.getYAngle()));
-      return IMUWrapper.getYAngle();
-    }
-    public double getZAngle() {
-      System.out.println(String.format("Angle Z: %s", IMUWrapper.getYAngle()));
-      return IMUWrapper.getZAngle();
-    }
 
   public void doDrive(double lThrottle, double rThrottle) {
       if (accelFactor > 0 && Math.abs(lThrottle) > 0 && Math.abs(rThrottle) > 0) {
