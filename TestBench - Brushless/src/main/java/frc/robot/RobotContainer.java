@@ -60,7 +60,8 @@ public class RobotContainer {
         () -> 
         m_dDriveTrain.doDrive(
           joystick1.getLeftY(),
-          joystick1.getRightY()
+          joystick1.getRightY(),
+          true
           ),
       m_dDriveTrain)
     );
