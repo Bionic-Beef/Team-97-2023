@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 // import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
+import edu.wpi.first.cameraserver.CameraServer;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,6 +50,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    CameraServer.startAutomaticCapture();
 
     m_dDriveTrain.setDefaultCommand(
 

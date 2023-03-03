@@ -99,9 +99,11 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void doDrive(double lThrottle, double rThrottle) {
+
+      boolean lneg = lThrottle < 0;
+      boolean rneg = rThrottle < 0;
+
       if (accelFactor > 0 && Math.abs(lThrottle) > 0 && Math.abs(rThrottle) > 0) {
-        boolean lneg = lThrottle < 0;
-        boolean rneg = rThrottle < 0;
 
         lThrottle = Math.log(Math.abs(lThrottle) / accelFactor + 1);
         rThrottle = Math.log(Math.abs(rThrottle) / accelFactor + 1);
@@ -109,13 +111,15 @@ public class DriveTrain extends SubsystemBase {
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
       }
-      if(Math.abs(lThrottle)>Math.abs(rThrottle))
-      {
-        rThrottle += (lThrottle - rThrottle)/2;
-      }
-      else if(Math.abs(rThrottle)>Math.abs(lThrottle))
-      {
-        lThrottle += (rThrottle - lThrottle)/2;
+      if (lneg == rneg) {
+        if(Math.abs(lThrottle)>Math.abs(rThrottle))
+        {
+          rThrottle += (lThrottle - rThrottle)/2;
+        }
+        else if(Math.abs(rThrottle)>Math.abs(lThrottle))
+        {
+          lThrottle += (rThrottle - lThrottle)/2;
+        }
       }
       m_drive.tankDrive(-lThrottle, rThrottle);
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
