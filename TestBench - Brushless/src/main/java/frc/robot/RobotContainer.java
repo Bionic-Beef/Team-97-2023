@@ -11,6 +11,7 @@ import frc.robot.commands.TurnToEast;
 import frc.robot.commands.TurnToNorth;
 import frc.robot.commands.TurnToSouth;
 import frc.robot.commands.TurnToWest;
+import frc.robot.commands.RotateChuteDoor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.subsystems.Chute;
 
 
 /**
@@ -31,6 +33,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain m_dDriveTrain = new DriveTrain();
+  private final Chute m_chute = new Chute();
   // private final Joystick joystick1 = new Joystick(0);
   private final XboxController joystick1 = new XboxController(0);
   private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
@@ -46,6 +49,8 @@ public class RobotContainer {
 
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
   private JoystickButton downAccel = new JoystickButton(joystick1, 7);
+  private JoystickButton rotateFlapCWise = new JoystickButton(joystick1, 9);
+  private JoystickButton rotateFlapCounterCWise = new JoystickButton(joystick1, 10);
 
   private final SlewRateLimiter filter = new SlewRateLimiter(2);
 
@@ -77,6 +82,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    rotateFlapCWise.whenHeld(new RotateChuteDoor(m_chute, true));//boolean imput decides direction to rotate
+    rotateFlapCounterCWise.whenHeld(new RotateChuteDoor(m_chute, false));
     toggleBL.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.setBL();
     }));
