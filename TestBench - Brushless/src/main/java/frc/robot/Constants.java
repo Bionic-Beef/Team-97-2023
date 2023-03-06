@@ -26,4 +26,6 @@ public final class Constants {
     public static double EncoderPIDKD = 0;
 
     public static double driveTrainGearRatio = 12.75;
+
+    public static double timeToRotateChuteInAuto;
 }

@@ -18,6 +18,7 @@ public class RotateChuteDoor extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
+  //the boolean d changes the direction of the spin; positive is forward
   public RotateChuteDoor(Chute c, boolean d) {
     m_chute = c;
     directionToRotate = d;
@@ -33,13 +34,19 @@ public class RotateChuteDoor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(directionToRotate){m_chute.spinForward();}
-    else{m_chute.spinBack();}
+    if(directionToRotate) {
+      m_chute.spinForward();
+    }
+    else {
+      m_chute.spinBack();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_chute.stopSpin();
+  }
 
   // Returns true when the command should end.
   @Override
