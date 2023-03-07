@@ -40,6 +40,8 @@ public class RobotContainer {
   private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
+  private JoystickButton toggleChuteHold = new JoystickButton(joystick1, 5);
+
   // private Command TurnToNorth = new TurnToNorth(m_dDriveTrain);
   // private Command TurnToSouth = new TurnToSouth(m_dDriveTrain);
   // private Command TurnToEast = new TurnToEast(m_dDriveTrain);
@@ -96,6 +98,7 @@ public class RobotContainer {
     toggleFR.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.setFR();
     }));
+    toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
     // turnToNorth.whenPressed(TurnToNorth);
     // turnToEast.whenPressed(TurnToEast);
     // turnToSouth.whenPressed(TurnToSouth);

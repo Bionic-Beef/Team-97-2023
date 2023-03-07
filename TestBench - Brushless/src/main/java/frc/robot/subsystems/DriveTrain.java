@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup m_left = new MotorControllerGroup(FL, BL, ML);
   private MotorControllerGroup m_right = new MotorControllerGroup(FR, BR, MR);
   private DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
-  private int accelFactor = 0;
+  private int accelFactor = 1;
   private double accelVal = 0.05;
 
   /** Creates a new DriveTrain. */
@@ -140,12 +140,7 @@ public class DriveTrain extends SubsystemBase {
         if (rneg) { rThrottle *= -1; }
       }
 
-      if (is_teleop) {
-        lThrottle = accelerate(m_left.get(), lThrottle);
-        rThrottle = accelerate(m_right.get(), rThrottle);
-      }
-
-      m_drive.tankDrive(-lThrottle, rThrottle);
+      m_drive.tankDrive(lThrottle, -rThrottle);
       // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
