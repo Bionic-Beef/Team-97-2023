@@ -25,9 +25,10 @@ public class DriveTrain extends SubsystemBase {
 
   private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
   private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax ML = new CANSparkMax(6, MotorType.kBrushless);
+
   private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
   private CANSparkMax BR = new CANSparkMax(1, MotorType.kBrushless);
-  private CANSparkMax ML = new CANSparkMax(6, MotorType.kBrushless);
   private CANSparkMax MR = new CANSparkMax(7, MotorType.kBrushless);
 
   private RelativeEncoder lEncoder = FL.getEncoder();
@@ -117,35 +118,20 @@ public class DriveTrain extends SubsystemBase {
     return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
   }
 
-  public double accelerate(double currentSpeed, double targetSpeed) {
-    if (targetSpeed > currentSpeed + accelVal) {
-      currentSpeed += accelVal;
-    } else if (targetSpeed < currentSpeed - accelVal) {
-      currentSpeed -= accelVal;
-    }
-  
-    return currentSpeed;
-  }
-
   public void doDrive(double lThrottle, double rThrottle, boolean is_teleop) {
     
       if (accelFactor > 0 && Math.abs(lThrottle) > 0 && Math.abs(rThrottle) > 0) {
         boolean lneg = lThrottle < 0;
         boolean rneg = rThrottle < 0;  
 
-        lThrottle = Math.log(Math.abs(lThrottle) / accelFactor + 1);
-        rThrottle = Math.log(Math.abs(rThrottle) / accelFactor + 1);
+        lThrottle = Math.pow(2, Math.pow(Math.abs(lThrottle), accelFactor)) - 1;
+        rThrottle = Math.pow(2, Math.pow(Math.abs(rThrottle), accelFactor)) - 1;
 
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
       }
 
-      if (is_teleop) {
-        lThrottle = accelerate(m_left.get(), lThrottle);
-        rThrottle = accelerate(m_right.get(), rThrottle);
-      }
-
-      m_drive.tankDrive(-lThrottle, rThrottle);
+      m_drive.tankDrive(lThrottle, -rThrottle);
       // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
   }
