@@ -120,6 +120,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousCommandGroup(m_dDriveTrain);
+    return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
   }
 }
