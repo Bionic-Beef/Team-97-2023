@@ -13,6 +13,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // PID constants
     public static double GyroYKP = 0.04;
     public static double GyroYKI = 0;
     public static double GyroYKD = 0.1;
@@ -27,5 +28,8 @@ public final class Constants {
 
     public static double driveTrainGearRatio = 12.75;
 
+    // Auto command constants
     public static double timeToRotateChuteInAuto;
+    public static double distanceToLeaveCommunityFromStart = 200;
+    public static double distanceToChargeStationFromOutsideCommunity = -100;
 }
