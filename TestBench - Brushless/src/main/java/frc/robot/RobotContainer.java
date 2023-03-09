@@ -12,9 +12,12 @@ import frc.robot.commands.TurnToNorth;
 import frc.robot.commands.TurnToSouth;
 import frc.robot.commands.TurnToWest;
 import frc.robot.commands.RotateChuteDoor;
+import frc.robot.commands.RotateChuteDoorAutonomous;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AutonomousBalance;
 import frc.robot.commands.AutonomousCommandGroup;
+import frc.robot.commands.MoveDistance;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -110,7 +113,6 @@ public class RobotContainer {
     downAccel.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.downFactor();
     }));
-
   }
   
   /**
@@ -120,6 +122,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
+    // return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
+    return new RotateChuteDoorAutonomous(m_chute);
+    // return new MoveDistance(m_dDriveTrain, 100);
+    // return new MoveDistance(m_dDriveTrain, -100);
+    // return new AutonomousBalance(m_dDriveTrain);
+
   }
 }
