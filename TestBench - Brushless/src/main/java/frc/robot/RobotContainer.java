@@ -44,6 +44,7 @@ public class RobotContainer {
   private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
   private JoystickButton toggleChuteHold = new JoystickButton(joystick1, 5);
+  private JoystickButton toggleChuteHoldBackwards = new JoystickButton(joystick1, 6);
 
   // private Command TurnToNorth = new TurnToNorth(m_dDriveTrain);
   // private Command TurnToSouth = new TurnToSouth(m_dDriveTrain);
@@ -87,8 +88,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    rotateFlapCWise.whenHeld(new RotateChuteDoor(m_chute, true));//boolean imput decides direction to rotate
-    rotateFlapCounterCWise.whenHeld(new RotateChuteDoor(m_chute, false));
     toggleBL.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.setBL();
     }));
@@ -102,6 +101,7 @@ public class RobotContainer {
       m_dDriveTrain.setFR();
     }));
     toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
+    toggleChuteHoldBackwards.whileHeld(new RotateChuteDoor(m_chute, false));
     // turnToNorth.whenPressed(TurnToNorth);
     // turnToEast.whenPressed(TurnToEast);
     // turnToSouth.whenPressed(TurnToSouth);
@@ -122,8 +122,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
-    return new RotateChuteDoorAutonomous(m_chute);
+    return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
+    // return new RotateChuteDoorAutonomous(m_chute);
     // return new MoveDistance(m_dDriveTrain, 100);
     // return new MoveDistance(m_dDriveTrain, -100);
     // return new AutonomousBalance(m_dDriveTrain);

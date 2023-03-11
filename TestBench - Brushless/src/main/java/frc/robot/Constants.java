@@ -29,7 +29,7 @@ public final class Constants {
     public static double driveTrainGearRatio = 12.75;
 
     // Auto command constants
-    public static double timeToRotateChuteInAuto;
+    public static double timeToRotateChuteInAuto = 4;
     public static double distanceToLeaveCommunityFromStart = 200;
     public static double distanceToChargeStationFromOutsideCommunity = -100;
 }

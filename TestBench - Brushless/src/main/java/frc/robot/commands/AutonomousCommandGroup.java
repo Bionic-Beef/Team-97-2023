@@ -16,9 +16,10 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
   //steps: score point, go over chargestation and leave starting zone, come back on the charge station, and self balance
   public AutonomousCommandGroup(DriveTrain train, Chute chute) {
     addCommands(
-      new RotateChuteDoorAutonomous(chute),
-      new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart),
-      new MoveDistance(train, Constants.distanceToChargeStationFromOutsideCommunity),
+      // new RotateChuteDoorAutonomous(chute),
+      // new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart),
+      // new MoveDistance(train, Constants.distanceToChargeStationFromOutsideCommunity),
+      new MoveUntilTilted(train),
       new AutonomousBalance(train)
     );
     // Requirements are implicitly added

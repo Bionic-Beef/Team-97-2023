@@ -58,6 +58,7 @@ public class MoveDistance extends CommandBase {
   public void execute()
   {
     currentPosition = m_DriveTrain.getPosition();
+    System.out.println(hasReachedDestination());
     zAngle = IMUWrapper.getZAngle();
     SmartDashboard.putNumber("Z angle", zAngle);
     double pidOutputZ = -gyroZPID.calculate(zAngle);
@@ -71,12 +72,20 @@ public class MoveDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return currentPosition > targetPosition;
+    return hasReachedDestination();
+  }
+  public boolean hasReachedDestination() {
+    if (targetPosition > 0) {
+      return currentPosition >= targetPosition;
+    }
+    else {
+      return currentPosition <= targetPosition;
+    }
   }
 
   public void goDistance(double targetPosition, double currentPosition, double zPIDOutput)
   {
-    if(targetPosition >= currentPosition)
+    if(!hasReachedDestination())
     {
       double motorOutput = MathUtil.clamp(drivingPID.calculate(currentPosition), -1, 1);
       leftThrottle = motorOutput;

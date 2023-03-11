@@ -114,7 +114,9 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPosition()
   {
-    return (-lEncoder.getPosition() + rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
+    double position = (lEncoder.getPosition() -rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
+    System.out.println("position: " + position);
+    return position;
   }
 
   public double accelerate(double currentSpeed, double targetSpeed) {
