@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.Victor;
@@ -151,6 +152,29 @@ public class DriveTrain extends SubsystemBase {
     doDrive(lThrottle, rThrottle, false);
   }
  
+  public void setMotorsToBrake() {
+    FL.setIdleMode(IdleMode.kBrake);
+    FR.setIdleMode(IdleMode.kBrake);
+    BL.setIdleMode(IdleMode.kBrake);
+    BR.setIdleMode(IdleMode.kBrake);
+    ML.setIdleMode(IdleMode.kBrake);
+    MR.setIdleMode(IdleMode.kBrake);
+    System.out.println("motors to brake method called");
+    System.out.println("FL idle mode: " + FL.getIdleMode());
+  }
+
+  public void setMotorsToCoast() {
+    FL.setIdleMode(IdleMode.kCoast);
+    FR.setIdleMode(IdleMode.kCoast);
+    BL.setIdleMode(IdleMode.kCoast);
+    BR.setIdleMode(IdleMode.kCoast);
+    ML.setIdleMode(IdleMode.kCoast);
+    MR.setIdleMode(IdleMode.kCoast);
+    System.out.println("motors to coast method called");
+    System.out.println("FL idle mode: " + FL.getIdleMode());
+
+  }
+
   @Override
   public void periodic() {
     

@@ -9,6 +9,7 @@ import frc.robot.subsystems.DriveTrain;
 import utilities.IMUWrapper;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.lang.Math;
@@ -18,6 +19,7 @@ public class MoveUntilTilted extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   PIDController gyroZPID = new PIDController(Constants.GyroZKP, Constants.GyroZKI, Constants.GyroZKD);
+  private Timer m_timer = new Timer();
   //position variables are measured in encoder ticks
 
   /**
@@ -25,7 +27,7 @@ public class MoveUntilTilted extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveUntilTilted(DriveTrain train, double togo) {
+  public MoveUntilTilted(DriveTrain train) {
     m_DriveTrain = train;
     
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,24 +38,27 @@ public class MoveUntilTilted extends CommandBase {
   @Override
   public void initialize()
   {
-    m_DriveTrain.doDrive(.3, .3);
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute()
   {
-    // m_DriveTrain.doDrive(.3, .3);
+    System.out.println("timer: " + m_timer.get());
+    m_DriveTrain.doDrive(-.5, -.5);
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //   m_DriveTrain.doDrive(0, 0);
+
+      m_DriveTrain.doDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(IMUWrapper.getYAngle()) > 10;
+    // return Math.abs(IMUWrapper.getYAngle()) > 10;
+    return m_timer.hasElapsed(2.5);
   }
 }

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Chute extends SubsystemBase {
   private CANSparkMax chuteMotor = new CANSparkMax(5, MotorType.kBrushed);
-  private double spinSpeed = 0.45;
+  private double spinSpeed = 0.35;
 
   public Chute() {}
 

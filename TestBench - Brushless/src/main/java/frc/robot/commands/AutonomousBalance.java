@@ -43,28 +43,28 @@ public class AutonomousBalance extends CommandBase {
     gyroZPID.reset();
 
     // IMUWrapper.calibrate();
-    m_timer = new Timer();
-    m_timer.start();
+    // m_timer = new Timer();
+    // m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      if (m_timer.hasElapsed(25)) {
+      // if (m_timer.hasElapsed(25)) {
         // find up-down (y) angle, calculate PID output
         yAngle = IMUWrapper.getYAngle();
         double pidOutputY = gyroYPID.calculate(yAngle);
         System.out.println("y pid output: " + pidOutputY);
-        double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.5, .5);
+        double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.4, .4);
         System.out.println("clamped y pid output: " + clampedPIDOutputY);
         // m_driveTrain.doDrive(clampedPIDOutputY, clampedPIDOutputY);
 
         // find left-right (z) angle, calculate PID output
         zAngle = IMUWrapper.getZAngle();
         double pidOutputZ = -gyroZPID.calculate(zAngle);
-        System.out.println("z pid output: " + pidOutputZ);
+        // System.out.println("z pid output: " + pidOutputZ);
         double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
-        System.out.println("clamped z pid output: " + clampedPIDOutputZ);
+        // System.out.println("clamped z pid output: " + clampedPIDOutputZ);
 
         double leftThrottle = clampedPIDOutputY;
         double rightThrottle = clampedPIDOutputY;
@@ -85,17 +85,13 @@ public class AutonomousBalance extends CommandBase {
         SmartDashboard.putNumber("Right throttle", rightThrottle);
         SmartDashboard.putNumber("Y angle", yAngle);
         SmartDashboard.putNumber("Z angle", zAngle);
-
-        if (Math.abs(yAngle) > 3) {
-          m_driveTrain.doDrive(leftThrottle, rightThrottle);
-
-        }
+        m_driveTrain.doDrive(leftThrottle, rightThrottle);
     }
-    else {
-      System.out.println("waiting to drive. time elapsed: " + m_timer.get());
-      m_driveTrain.doDrive(0, 0);
-    }
-  }
+    // else {
+    //   System.out.println("waiting to drive. time elapsed: " + m_timer.get());
+    //   m_driveTrain.doDrive(0, 0);
+    // }
+
 
   // Called once the command ends or is interrupted.
   @Override

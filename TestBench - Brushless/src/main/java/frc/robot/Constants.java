@@ -14,13 +14,13 @@ package frc.robot;
  */
 public final class Constants {
     // PID constants
-    public static double GyroYKP = 0.04;
-    public static double GyroYKI = 0;
-    public static double GyroYKD = 0.1;
+    public static double GyroYKP = 0.035;
+    public static double GyroYKI = 0.003;
+    public static double GyroYKD = 0;
 
     public static double GyroZKP = 0.004;
     public static double GyroZKI = 0;
-    public static double GyroZKD = 0.1;
+    public static double GyroZKD = 0;
 
     public static double EncoderPIDKP = 0.25;
     public static double EncoderPIDKI = 0.05;
