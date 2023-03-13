@@ -18,7 +18,7 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
     addCommands(
       // new RotateChuteDoorAutonomous(chute),
       // new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart),
-      // new MoveDistance(train, Constants.distanceToChargeStationFromOutsideCommunity),
+      // new MoveDistanceConstantSpeed(train),
       new MoveUntilTilted(train),
       new AutonomousBalance(train)
     );

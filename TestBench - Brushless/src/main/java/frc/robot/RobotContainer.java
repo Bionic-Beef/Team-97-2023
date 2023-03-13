@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-// import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
 import frc.robot.commands.RotateChuteDoor;
@@ -17,7 +15,6 @@ import utilities.IMUWrapper;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-// import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import edu.wpi.first.cameraserver.CameraServer;
@@ -44,8 +41,6 @@ public class RobotContainer {
   private JoystickButton toggleChuteHoldBackwards = new JoystickButton(joystick1, 6);
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
   private JoystickButton downAccel = new JoystickButton(joystick1, 7);
-
-  private final SlewRateLimiter filter = new SlewRateLimiter(2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
