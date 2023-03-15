@@ -14,14 +14,22 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   //steps: score point, go over chargestation and leave starting zone, come back on the charge station, and self balance
-  public AutonomousCommandGroup(DriveTrain train, Chute chute) {
-    addCommands(
-      // new RotateChuteDoorAutonomous(chute),
-      // new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart)
-      new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart)
-      // new MoveDistanceConstantSpeed(train, Constants.distanceToChargeStationFromOutsideCommunity)
-      // new AutonomousBalance(train)
-    );
+  public AutonomousCommandGroup(DriveTrain train, Chute chute, boolean isBalancing) {
+    if (isBalancing) {
+      addCommands(
+        // new RotateChuteDoorAutonomous(chute),
+        // new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart)
+        new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart)
+        // new MoveDistanceConstantSpeed(train, Constants.distanceToChargeStationFromOutsideCommunity)
+        // new AutonomousBalance(train)
+      );
+    } else {
+      addCommands(
+        new RotateChuteDoorAutonomous(chute),
+        new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart)
+      );
+    }
+    
     // Requirements are implicitly added
   }
 }

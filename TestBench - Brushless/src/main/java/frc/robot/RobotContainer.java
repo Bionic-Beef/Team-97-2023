@@ -112,7 +112,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
+    //isBalancing should be true when we are the designated auto-balance team
+    return new AutonomousCommandGroup(m_dDriveTrain, m_chute, true);
   }
 }
