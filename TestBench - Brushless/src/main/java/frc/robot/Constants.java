@@ -26,10 +26,15 @@ public final class Constants {
     public static double EncoderPIDKI = 0.05;
     public static double EncoderPIDKD = 0;
 
-    public static double driveTrainGearRatio = 12.75;
+    //encoder revolutions to wheel revolutions
+    public static double driveTrainGearRatio = 7;
 
     // Auto command constants
     public static double timeToRotateChuteInAuto = 4;
-    public static double distanceToLeaveCommunityFromStart = 200;
-    public static double distanceToChargeStationFromOutsideCommunity = -100;
+
+    //distances are inverse of what we consider the "front" of the robot
+    public static double distanceToLeaveCommunityFromStart = -30;
+    public static double distanceToChargeStationFromOutsideCommunity = 30;
+
+    public static double wheelRadius = 3.5;
 }

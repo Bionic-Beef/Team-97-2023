@@ -115,8 +115,14 @@ public class DriveTrain extends SubsystemBase {
 
   public double getPosition()
   {
-    double position = (lEncoder.getPosition() -rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
+    double position = (lEncoder.getPosition() - rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
     System.out.println("position: " + position);
+    return position;
+  }
+  public double getPosition(double targetDistance)
+  {
+    double position = (lEncoder.getPosition() - rEncoder.getPosition()) / 2 / Constants.driveTrainGearRatio;
+    System.out.println("position: " + position + " target position: " + targetDistance);
     return position;
   }
 
@@ -142,7 +148,7 @@ public class DriveTrain extends SubsystemBase {
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
       }
-
+      System.out.println("encoder output: " + getPosition());
       m_drive.tankDrive(lThrottle, -rThrottle);
       // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
