@@ -11,11 +11,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class MoveUntilTilted extends CommandBase {
+public class MoveDistanceConstantSpeed extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveTrain m_DriveTrain;
   PIDController gyroZPID = new PIDController(Constants.GyroZKP, Constants.GyroZKI, Constants.GyroZKD);
   private Timer m_timer = new Timer();
+  private double targetPosition;
+  private double currentPosition;
+  private double wheelRadius = Constants.wheelRadius;
+
   //position variables are measured in encoder ticks
 
   /**
@@ -23,9 +27,9 @@ public class MoveUntilTilted extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveUntilTilted(DriveTrain train) {
+  public MoveDistanceConstantSpeed(DriveTrain train, double togo) {
     m_DriveTrain = train;
-    
+    targetPosition = togo / (2*wheelRadius * Math.PI);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveTrain);
   }
@@ -34,6 +38,7 @@ public class MoveUntilTilted extends CommandBase {
   @Override
   public void initialize()
   {
+    m_DriveTrain.resetEncoders();
     m_timer.start();
   }
 
@@ -41,20 +46,31 @@ public class MoveUntilTilted extends CommandBase {
   @Override
   public void execute()
   {
-    System.out.println("timer: " + m_timer.get());
-    m_DriveTrain.doDrive(-.5, -.5);
+    currentPosition = m_DriveTrain.getPosition(targetPosition);
+    if (targetPosition < 0) {
+      m_DriveTrain.doDrive(-.5, -.5);
+    } else {
+      m_DriveTrain.doDrive(.5, .5);
+    }
   }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
-      m_DriveTrain.doDrive(0, 0);
+    System.out.println("move distance constant speed finished");
+    m_DriveTrain.doDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // return Math.abs(IMUWrapper.getYAngle()) > 10;
-    return m_timer.hasElapsed(2.5);
+    // return m_timer.hasElapsed(2.5);
+    // distance is negative
+    if (targetPosition > 0) {
+      return currentPosition >= targetPosition;
+    }
+    else {
+      return currentPosition <= targetPosition;
+    }
   }
 }

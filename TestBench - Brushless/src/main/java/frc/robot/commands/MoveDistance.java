@@ -25,7 +25,7 @@ public class MoveDistance extends CommandBase {
   private double targetPosition;
   private double leftThrottle;
   private double rightThrottle;
-  private double wheelRadius = 3.5;
+  private double wheelRadius = Constants.wheelRadius;
   private double zAngle;
 
   /**
@@ -57,8 +57,7 @@ public class MoveDistance extends CommandBase {
   @Override
   public void execute()
   {
-    currentPosition = m_DriveTrain.getPosition();
-    System.out.println(hasReachedDestination());
+    currentPosition = m_DriveTrain.getPosition(targetPosition);
     zAngle = IMUWrapper.getZAngle();
     SmartDashboard.putNumber("Z angle", zAngle);
     double pidOutputZ = -gyroZPID.calculate(zAngle);
@@ -67,7 +66,9 @@ public class MoveDistance extends CommandBase {
   }
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("move distance");
+  }
 
   // Returns true when the command should end.
   @Override
@@ -85,25 +86,23 @@ public class MoveDistance extends CommandBase {
 
   public void goDistance(double targetPosition, double currentPosition, double zPIDOutput)
   {
-    if(!hasReachedDestination())
-    {
-      double motorOutput = MathUtil.clamp(drivingPID.calculate(currentPosition), -1, 1);
+      double motorOutput = MathUtil.clamp(drivingPID.calculate(currentPosition), -.7, .7);
       leftThrottle = motorOutput;
       rightThrottle = motorOutput;
       System.out.println("current position:" + currentPosition + "target position:" + targetPosition);
       SmartDashboard.putNumber("Current position", currentPosition);
       SmartDashboard.putNumber("Target position", targetPosition);
       SmartDashboard.putNumber("PID Output", motorOutput);
-      System.out.println("pid output: " + motorOutput);
       if (zPIDOutput > 0) {
         rightThrottle *= (1 - Math.abs(zPIDOutput));
       }
       else {
         leftThrottle *= (1 - Math.abs(zPIDOutput));
       }
+      System.out.println("left throttle: " + leftThrottle);
+      System.out.println("right throttle: " + rightThrottle);
       SmartDashboard.putNumber("Left Throttle", leftThrottle);
       SmartDashboard.putNumber("Right Throttle", rightThrottle);
       m_DriveTrain.doDrive(leftThrottle, rightThrottle);
-    }
   }
 }
