@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
+import frc.robot.commands.MoveDistance;
+import frc.robot.commands.MoveDistanceConstantSpeed;
 import frc.robot.commands.RotateChuteDoor;
 import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.DriveTrain;
@@ -33,10 +35,11 @@ public class RobotContainer {
   private final XboxController joystick1 = new XboxController(0);
   private final Chute m_chute = new Chute();
 
-  private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
-  private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
-  private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
-  private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
+  private JoystickButton moveSetDistanceForward = new JoystickButton(joystick1, 2);
+  // private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
+  // private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
+  // private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
+  // private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
   private JoystickButton toggleChuteHold = new JoystickButton(joystick1, 5);
   private JoystickButton toggleChuteHoldBackwards = new JoystickButton(joystick1, 6);
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
@@ -77,24 +80,19 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // toggleTurningSpeed.whenPressed(new InstantCommand(() -> {
-    //   // m_dDriveTrain.toggleTurnSpeed();
+    // toggleBL.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setBL();
     // }));
-    // toggleArcadeDrive.whenPressed(new InstantCommand(() -> {
-      // m_dDriveTrain.switchMode();
+    // toggleBR.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setBR();
     // }));
-    toggleBL.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.setBL();
-    }));
-    toggleBR.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.setBR();
-    }));
-    toggleFL.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.setFL();
-    }));
-    toggleFR.whenPressed(new InstantCommand(() -> {
-      m_dDriveTrain.setFR();
-    }));
+    // toggleFL.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setFL();
+    // }));
+    // toggleFR.whenPressed(new InstantCommand(() -> {
+    //   m_dDriveTrain.setFR();
+    // }));
+    moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
     toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
     toggleChuteHoldBackwards.whileHeld(new RotateChuteDoor(m_chute, false));
     upAccel.whenPressed(new InstantCommand(() -> {
@@ -113,6 +111,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     //isBalancing should be true when we are the designated auto-balance team
-    return new AutonomousCommandGroup(m_dDriveTrain, m_chute, true);
+    return new AutonomousCommandGroup(m_dDriveTrain, m_chute);
   }
 }
