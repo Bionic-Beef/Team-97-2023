@@ -38,7 +38,7 @@ public class RobotContainer {
   private final Chute m_chute = new Chute();
   private final Horns m_horns = new Horns();
 
-  private JoystickButton moveSetDistanceForward = new JoystickButton(joystick1, 2);
+  // private JoystickButton moveSetDistanceForward = new JoystickButton(joystick1, 2);
   // private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   // private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   // private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
@@ -98,7 +98,7 @@ public class RobotContainer {
     // toggleFR.whenPressed(new InstantCommand(() -> {
     //   m_dDriveTrain.setFR();
     // }));
-    moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
+    // moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
     toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
     toggleChuteHoldBackwards.whileHeld(new RotateChuteDoor(m_chute, false));
     upAccel.whenPressed(new InstantCommand(() -> {

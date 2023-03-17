@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Horns extends SubsystemBase {
-  private CANSparkMax hornsMotor = new CANSparkMax(8, MotorType.kBrushless);
+  private CANSparkMax hornsMotor = new CANSparkMax(8, MotorType.kBrushed);
 
   public Horns() {}
 

@@ -36,6 +36,7 @@ public class SpinHorns extends CommandBase {
   @Override
   public void execute()
   {
+    System.out.println("motor speed: " + motorSpeed);
     m_horns.spinForward(motorSpeed);
   }
   // Called once the command ends or is interrupted.

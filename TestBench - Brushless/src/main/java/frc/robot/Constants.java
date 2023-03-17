@@ -38,5 +38,5 @@ public final class Constants {
 
     public static double wheelRadius = 3.5;
 
-    public static double hornsMotorSpeed = .2;
+    public static double hornsMotorSpeed = .35;
 }

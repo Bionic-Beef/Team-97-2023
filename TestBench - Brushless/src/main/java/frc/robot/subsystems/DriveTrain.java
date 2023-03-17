@@ -148,7 +148,6 @@ public class DriveTrain extends SubsystemBase {
         if (lneg) { lThrottle *= -1; }
         if (rneg) { rThrottle *= -1; }
       }
-      System.out.println("encoder output: " + getPosition());
       m_drive.tankDrive(lThrottle, -rThrottle);
       // System.out.println("Positions: " + lEncoder.getPosition()+ ", " + -rEncoder.getPosition());
       // System.out.println(String.format("I am tank driving with a lThrottle of %s and a rThrottle of %s", lThrottle, rThrottle));
