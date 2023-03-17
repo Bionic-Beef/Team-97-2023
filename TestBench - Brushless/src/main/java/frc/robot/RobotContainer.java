@@ -11,8 +11,10 @@ import frc.robot.commands.AutonomousCommandGroup;
 import frc.robot.commands.MoveDistance;
 import frc.robot.commands.MoveDistanceConstantSpeed;
 import frc.robot.commands.RotateChuteDoor;
+import frc.robot.commands.SpinHorns;
 import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Horns;
 import utilities.IMUWrapper;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,12 +36,16 @@ public class RobotContainer {
   // private final Joystick joystick1 = new Joystick(0);
   private final XboxController joystick1 = new XboxController(0);
   private final Chute m_chute = new Chute();
+  private final Horns m_horns = new Horns();
 
   private JoystickButton moveSetDistanceForward = new JoystickButton(joystick1, 2);
   // private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   // private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   // private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
   // private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
+  private JoystickButton spinHornsForward = new JoystickButton(joystick1, 4);
+  private JoystickButton spinHornsBackward = new JoystickButton(joystick1, 1);
+
   private JoystickButton toggleChuteHold = new JoystickButton(joystick1, 5);
   private JoystickButton toggleChuteHoldBackwards = new JoystickButton(joystick1, 6);
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
@@ -101,6 +107,9 @@ public class RobotContainer {
     downAccel.whenPressed(new InstantCommand(() -> {
       m_dDriveTrain.downFactor();
     }));
+    spinHornsForward.whenHeld(new SpinHorns(m_horns, Constants.hornsMotorSpeed));
+
+    spinHornsBackward.whenHeld(new SpinHorns(m_horns, -Constants.hornsMotorSpeed));
 
   }
 

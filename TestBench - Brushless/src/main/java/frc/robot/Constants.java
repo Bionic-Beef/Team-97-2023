@@ -37,4 +37,6 @@ public final class Constants {
     public static double distanceToChargeStationFromOutsideCommunity = -50;
 
     public static double wheelRadius = 3.5;
+
+    public static double hornsMotorSpeed = .2;
 }
