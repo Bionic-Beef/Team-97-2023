@@ -20,6 +20,9 @@ public final class Constants {
 
     public static double GyroZKP = 0.004;
     public static double GyroZKI = 0;
+
+
+
     public static double GyroZKD = 0;
 
     public static double EncoderPIDKP = 0.25;
@@ -33,7 +36,7 @@ public final class Constants {
     public static double timeToRotateChuteInAuto = 1;
 
     //distances are inverse of what we consider the "front" of the robot
-    public static double distanceToLeaveCommunityFromStart = 80;
+    public static double distanceToLeaveCommunityFromStart = 60;
     public static double distanceToChargeStationFromOutsideCommunity = -50;
 
     public static double wheelRadius = 3.5;

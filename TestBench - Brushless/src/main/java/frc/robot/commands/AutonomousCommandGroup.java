@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveTrain;
 
 /** An example command that uses an example subsystem. */
 public class AutonomousCommandGroup extends SequentialCommandGroup {
-  boolean isBalancing = SmartDashboard.getBoolean("isBalancing", true);
+  boolean isBalancing = false;
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
@@ -31,6 +31,7 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
         new RotateChuteDoorAutonomous(chute),
         new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart)
       );
+      
     }
     
     // Requirements are implicitly added
