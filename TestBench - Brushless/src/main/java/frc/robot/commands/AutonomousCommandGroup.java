@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.Chute;
@@ -12,24 +11,35 @@ import frc.robot.subsystems.DriveTrain;
 
 /** An example command that uses an example subsystem. */
 public class AutonomousCommandGroup extends SequentialCommandGroup {
-  boolean isBalancing = false;
+  boolean isBalancing = true;
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   //steps: score point, go over chargestation and leave starting zone, come back on the charge station, and self balance
   public AutonomousCommandGroup(DriveTrain train, Chute chute) {
     if (isBalancing) {
+      // addCommands(
+      //   new RotateChuteDoorAutonomous(chute),
+      //   new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart, Constants.autoDrivingSpeedPhaseOne),
+      //   new MoveDistanceConstantSpeed(train, Constants.distanceToChargeStationFromOutsideCommunity, Constants.autoDrivingSpeedPhaseTwo),
+      //   new AutonomousBalance(train)
+      // );
+      // addCommands(
+      //   new RotateChuteDoorAutonomous(chute),
+      //   new MoveDistanceConstantSpeed(train, Constants.autoTargetDistancePhaseOne, Constants.autoDrivingSpeedPhaseOne),
+      //   new MoveDistanceConstantSpeed(train, Constants.autoTargetDistancePhaseTwo, Constants.autoDrivingSpeedPhaseTwo),
+      //   new AutonomousBalance(train)
+      // );
       addCommands(
         new RotateChuteDoorAutonomous(chute),
-        // new MoveDistance(train, Constants.distanceToLeaveCommunityFromStart)
-        new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart),
-        new MoveDistanceConstantSpeed(train, Constants.distanceToChargeStationFromOutsideCommunity),
+        new MoveUntilTilted(train, Constants.autoTargetAnglePhaseOne, Constants.autoDrivingSpeedPhaseOne, true),
+        new MoveUntilTilted(train, Constants.autoTargetAnglePhaseTwo, Constants.autoDrivingSpeedPhaseTwo, false),
         new AutonomousBalance(train)
       );
     } else {
       addCommands(
         new RotateChuteDoorAutonomous(chute),
-        new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart)
+        new MoveDistanceConstantSpeed(train, Constants.distanceToLeaveCommunityFromStart, .7)
       );
       
     }

@@ -12,18 +12,13 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 import java.lang.Math;
 
 public class DriveTrain extends SubsystemBase {
-  // private Victor FL = new Victor(4);
-  // private Victor BL = new Victor(3);
-  // private Victor FR = new Victor(2);
-  // private Victor BR = new Victor(1);
-
+  
   private CANSparkMax FL = new CANSparkMax(4, MotorType.kBrushless);
   private CANSparkMax BL = new CANSparkMax(3, MotorType.kBrushless);
   private CANSparkMax FR = new CANSparkMax(2, MotorType.kBrushless);
