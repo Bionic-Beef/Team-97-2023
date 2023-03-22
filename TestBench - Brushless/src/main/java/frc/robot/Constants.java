@@ -14,9 +14,8 @@ package frc.robot;
  */
 public final class Constants {
     // PID constants
-    public static double GyroYKP = 0.035;
-    //0.02
-    public static double GyroYKI = 0.003;
+    public static double GyroYKP = 0.030;
+    public static double GyroYKI = 0.001;
     public static double GyroYKD = 0;
 
     public static double GyroZKP = 0.004;
@@ -32,7 +31,7 @@ public final class Constants {
 
     // Auto command constants
     public static double timeToRotateChuteInAuto = 1;
-
+    
     public static double autoDrivingSpeedPhaseOne = .6;
     public static double autoDrivingSpeedPhaseTwo = .3;
 
@@ -44,8 +43,12 @@ public final class Constants {
     public static double autoTargetDistancePhaseTwo = -20;
 
     //distances are inverse of what we consider the "front" of the robot
-    public static double distanceToLeaveCommunityFromStart = 100;
-    public static double distanceToChargeStationFromOutsideCommunity = -50;
-
+    public static double distanceToLeaveCommunityFromStart = 75;
+    public static double distanceToChargeStationFromOutsideCommunity = -140;
+    public static double distanceToChargeStationFromStart = 60;
     public static double wheelRadius = 3.5;
+    public static double chuteSpeed  = .35;
+    public static double chuteSpeedBackward = 1;
+    public static double autoConstantSpeed = .70;
 }
+
