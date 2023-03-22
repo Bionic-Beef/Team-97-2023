@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.Chute;
@@ -12,7 +11,7 @@ import frc.robot.subsystems.DriveTrain;
 
 /** An example command that uses an example subsystem. */
 public class AutonomousCommandGroup extends SequentialCommandGroup {
-  boolean isBalancing = false;
+  boolean isBalancing = true;
 
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
@@ -36,7 +35,7 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
         new MoveUntilTilted(train, Constants.autoTargetAnglePhaseOne, Constants.autoDrivingSpeedPhaseOne, true),
         new MoveUntilTilted(train, Constants.autoTargetAnglePhaseTwo, Constants.autoDrivingSpeedPhaseTwo, false),
         new AutonomousBalance(train)
-      )
+      );
     } else {
       addCommands(
         new RotateChuteDoorAutonomous(chute),

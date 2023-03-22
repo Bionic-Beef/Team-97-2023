@@ -32,23 +32,24 @@ public final class Constants {
     // Auto command constants
     public static double timeToRotateChuteInAuto = 1;
     
-    public static double autoDrivingSpeedPhaseOne = .6;
+    public static double autoDrivingSpeedPhaseOne = .5;
     public static double autoDrivingSpeedPhaseTwo = .3;
 
     //angle one should be greater than angle two
-    public static double autoTargetAnglePhaseOne = 15;
+    public static double autoTargetAnglePhaseOne = 20;
     public static double autoTargetAnglePhaseTwo = 5;
-
+    
     public static double autoTargetDistancePhaseOne = -30;
     public static double autoTargetDistancePhaseTwo = -20;
 
+    public static double autoConstantSpeed = .70;
+
     //distances are inverse of what we consider the "front" of the robot
-    public static double distanceToLeaveCommunityFromStart = 75;
+    public static double distanceToLeaveCommunityFromStart = 100;
     public static double distanceToChargeStationFromOutsideCommunity = -140;
     public static double distanceToChargeStationFromStart = 60;
     public static double wheelRadius = 3.5;
     public static double chuteSpeed  = .35;
     public static double chuteSpeedBackward = 1;
-    public static double autoConstantSpeed = .70;
 }
 
