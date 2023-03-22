@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
+import utilities.IMUWrapper;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -16,10 +18,12 @@ public class MoveDistanceConstantSpeed extends CommandBase {
   private final DriveTrain m_DriveTrain;
   PIDController gyroZPID = new PIDController(Constants.GyroZKP, Constants.GyroZKI, Constants.GyroZKD);
   private Timer m_timer = new Timer();
+  private double leftThrottle;
+  private double rightThrottle;
+  private double motorSpeed;
   private double targetPosition;
   private double currentPosition;
   private double wheelRadius = Constants.wheelRadius;
-  private double driveSpeed;
 
   //position variables are measured in encoder ticks
 
@@ -28,18 +32,11 @@ public class MoveDistanceConstantSpeed extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveDistanceConstantSpeed(DriveTrain train, double togo, double driveSpeed) {
+  public MoveDistanceConstantSpeed(DriveTrain train, double togo, double speed) {
     m_DriveTrain = train;
     targetPosition = togo / (2*wheelRadius * Math.PI);
-    this.driveSpeed = driveSpeed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_DriveTrain);
-  }
-
-  public MoveDistanceConstantSpeed(DriveTrain train, double togo) {
-    m_DriveTrain = train;
-    targetPosition = togo / (2*wheelRadius * Math.PI);
-
   }
 
   // Called when the command is initially scheduled.
@@ -47,6 +44,8 @@ public class MoveDistanceConstantSpeed extends CommandBase {
   public void initialize()
   {
     m_DriveTrain.resetEncoders();
+    gyroZPID.reset();
+    gyroZPID.setSetpoint(0);
     m_timer.start();
   }
 
@@ -54,11 +53,22 @@ public class MoveDistanceConstantSpeed extends CommandBase {
   @Override
   public void execute()
   {
+    leftThrottle = motorSpeed;
+    rightThrottle = motorSpeed;
     currentPosition = m_DriveTrain.getPosition(targetPosition);
+    double zAngle = IMUWrapper.getZAngle();
+    double pidOutputZ = -MathUtil.clamp(gyroZPID.calculate(zAngle), -5, .5);
+    if (pidOutputZ > 0) {
+      rightThrottle *= (1 - Math.abs(pidOutputZ));
+    }
+    else {
+      leftThrottle *= (1 - Math.abs(pidOutputZ));
+    }
     if (targetPosition < 0) {
-      m_DriveTrain.doDrive(-driveSpeed, -driveSpeed);
+      
+      m_DriveTrain.doDrive(-leftThrottle, -rightThrottle);
     } else {
-      m_DriveTrain.doDrive(driveSpeed, driveSpeed);
+      m_DriveTrain.doDrive(leftThrottle, rightThrottle);
     }
   }
   // Called once the command ends or is interrupted.

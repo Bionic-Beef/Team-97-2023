@@ -8,19 +8,19 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Chute extends SubsystemBase {
   private CANSparkMax chuteMotor = new CANSparkMax(5, MotorType.kBrushed);
-  private double spinSpeed = 0.35;
 
   public Chute() {}
 
   public void spinForward() {
-    chuteMotor.set(spinSpeed);
+    chuteMotor.set(Constants.chuteSpeed);
   }
 
   public void spinBack() {
-    chuteMotor.set(-spinSpeed);
+    chuteMotor.set(-Constants.chuteSpeedBackward);
   }
 
   public void stopSpin() {
