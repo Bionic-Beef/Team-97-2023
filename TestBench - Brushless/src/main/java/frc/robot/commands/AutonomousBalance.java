@@ -57,14 +57,12 @@ public class AutonomousBalance extends CommandBase {
         System.out.println("y pid output: " + pidOutputY);
         double clampedPIDOutputY = MathUtil.clamp(pidOutputY, -.4, .4);
         System.out.println("clamped y pid output: " + clampedPIDOutputY);
-        // m_driveTrain.doDrive(clampedPIDOutputY, clampedPIDOutputY);
-
+        SmartDashboard.putNumber("P output", gyroYPID.getPositionError() * Constants.GyroYKP);
+        SmartDashboard.putNumber("D output", gyroYPID.getVelocityError() * Constants.GyroYKD);
         // find left-right (z) angle, calculate PID output
         zAngle = IMUWrapper.getZAngle();
         double pidOutputZ = -gyroZPID.calculate(zAngle);
-        // System.out.println("z pid output: " + pidOutputZ);
         double clampedPIDOutputZ = MathUtil.clamp(pidOutputZ, -.5, .5);
-        // System.out.println("clamped z pid output: " + clampedPIDOutputZ);
 
         double leftThrottle = clampedPIDOutputY;
         double rightThrottle = clampedPIDOutputY;

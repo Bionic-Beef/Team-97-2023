@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
 import frc.robot.commands.MoveDistance;
 import frc.robot.commands.MoveDistanceConstantSpeed;
+import frc.robot.commands.MoveLeftXDistance;
 import frc.robot.commands.RotateChuteDoor;
 import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.DriveTrain;
@@ -35,7 +36,7 @@ public class RobotContainer {
   private final XboxController joystick1 = new XboxController(0);
   private final Chute m_chute = new Chute();
 
-  private JoystickButton moveSetDistanceForward = new JoystickButton(joystick1, 2);
+  private JoystickButton moveToTheLeft = new JoystickButton(joystick1, 2);
   // private JoystickButton toggleFL = new JoystickButton(joystick1, 4);
   // private JoystickButton toggleBL = new JoystickButton(joystick1, 3);
   // private JoystickButton toggleFR = new JoystickButton(joystick1, 2);
@@ -92,7 +93,9 @@ public class RobotContainer {
     // toggleFR.whenPressed(new InstantCommand(() -> {
     //   m_dDriveTrain.setFR();
     // }));
-    moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
+    // moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
+    moveToTheLeft.whenPressed(new MoveLeftXDistance(m_dDriveTrain));
+
     toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
     toggleChuteHoldBackwards.whileHeld(new RotateChuteDoor(m_chute, false));
     upAccel.whenPressed(new InstantCommand(() -> {
