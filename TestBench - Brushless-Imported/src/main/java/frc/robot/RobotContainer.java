@@ -5,8 +5,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AutonomousCommandGroup;
+import frc.robot.commands.MoveLeft;
 import frc.robot.commands.RotateChuteDoor;
 import frc.robot.subsystems.Chute;
 import frc.robot.subsystems.DriveTrain;
@@ -38,6 +40,7 @@ public class RobotContainer {
   // private JoystickButton toggleBR = new JoystickButton(joystick1, 1);
   private JoystickButton toggleChuteHold = new JoystickButton(joystick1, 5);
   private JoystickButton toggleChuteHoldBackwards = new JoystickButton(joystick1, 6);
+  private JoystickButton turnLeftButton = new JoystickButton(joystick1, 4);
   private JoystickButton upAccel = new JoystickButton(joystick1, 8);
   private JoystickButton downAccel = new JoystickButton(joystick1, 7);
 
@@ -89,7 +92,7 @@ public class RobotContainer {
     //   m_dDriveTrain.setFR();
     // }));
     // moveSetDistanceForward.whenPressed(new MoveDistanceConstantSpeed(m_dDriveTrain, 5));
-
+    turnLeftButton.whenPressed(new MoveLeft(m_dDriveTrain));
     toggleChuteHold.whileHeld(new RotateChuteDoor(m_chute, true));
     toggleChuteHoldBackwards.whileHeld(new RotateChuteDoor(m_chute, false));
     upAccel.whenPressed(new InstantCommand(() -> {

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 import utilities.IMUWrapper;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -40,6 +41,8 @@ public class MoveUntilTilted extends CommandBase {
   @Override
   public void initialize()
   {
+    gyroZPID.reset();
+    gyroZPID.setSetpoint(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,6 +50,23 @@ public class MoveUntilTilted extends CommandBase {
   public void execute()
   {
     currentAngle = IMUWrapper.getYAngle();
+
+    // double rightThrottle = driveSpeed;
+    // double leftThrottle = driveSpeed;
+    // double zAngle = IMUWrapper.getZAngle();
+    // double pidOutputZ = -MathUtil.clamp(gyroZPID.calculate(zAngle), -5, .5);
+    // if (pidOutputZ > 0) {
+    //   rightThrottle *= (1 - Math.abs(pidOutputZ));
+    // }
+    // else {
+    //   leftThrottle *= (1 - Math.abs(pidOutputZ));
+    // }
+    // if (targetAngle < 0) {
+    //   m_DriveTrain.doDrive(-leftThrottle, -rightThrottle);
+    // } else {
+    //   m_DriveTrain.doDrive(leftThrottle, rightThrottle);
+    // }
+
     if (targetAngle < 0) {
       m_DriveTrain.doDrive(-driveSpeed, -driveSpeed);
     } else {
