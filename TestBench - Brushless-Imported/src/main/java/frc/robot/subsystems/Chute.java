@@ -12,17 +12,15 @@ import frc.robot.Constants;
 
 public class Chute extends SubsystemBase {
   private CANSparkMax chuteMotor = new CANSparkMax(5, MotorType.kBrushed);
-  private double spinSpeed = Constants.chuteSpeed;
-  private double backwardsSpinSpeed = Constants.chuteSpeedBackward;
 
   public Chute() {}
 
   public void spinForward() {
-    chuteMotor.set(spinSpeed);
+    chuteMotor.set(Constants.chuteSpeed);
   }
 
   public void spinBack() {
-    chuteMotor.set(-backwardsSpinSpeed);
+    chuteMotor.set(-Constants.chuteSpeedBackward);
   }
 
   public void stopSpin() {
