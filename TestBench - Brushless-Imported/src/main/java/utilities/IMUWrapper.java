@@ -9,7 +9,9 @@ public class IMUWrapper {
         m_IMU.calibrate();
     }
     public static double getYAngle() {
-        return m_IMU.getGyroAngleY();
+        double yAngle = m_IMU.getGyroAngleY();
+        System.out.println("y angle: " + yAngle);
+        return yAngle;
     }
     public static double getZAngle() {
         return m_IMU.getGyroAngleZ();

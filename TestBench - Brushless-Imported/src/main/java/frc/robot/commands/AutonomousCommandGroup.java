@@ -30,11 +30,16 @@ public class AutonomousCommandGroup extends SequentialCommandGroup {
       //   new MoveDistanceConstantSpeed(train, Constants.autoTargetDistancePhaseTwo, Constants.autoDrivingSpeedPhaseTwo),
       //   new AutonomousBalance(train)
       // );
+      // addCommands(
+      //   new RotateChuteDoorAutonomous(chute),
+      //   new MoveUntilTilted(train, Constants.autoTargetAnglePhaseOne, Constants.autoDrivingSpeedPhaseOne, true),
+      //   new MoveUntilTilted(train, Constants.autoTargetAnglePhaseTwo, Constants.autoDrivingSpeedPhaseTwo, false),
+      //   new AutonomousBalance(train)
+      // );
       addCommands(
-        new RotateChuteDoorAutonomous(chute),
-        new MoveUntilTilted(train, Constants.autoTargetAnglePhaseOne, Constants.autoDrivingSpeedPhaseOne, true),
-        new MoveUntilTilted(train, Constants.autoTargetAnglePhaseTwo, Constants.autoDrivingSpeedPhaseTwo, false),
-        new AutonomousBalance(train)
+        new MoveDistanceConstantSpeed(train, Constants.autoTargetDistancePhaseOne, Constants.autoDrivingSpeedPhaseOne),
+        new MoveDistanceConstantSpeed(train, -Constants.autoTargetDistancePhaseOne, Constants.autoDrivingSpeedPhaseOne)
+
       );
     } else {
       addCommands(
